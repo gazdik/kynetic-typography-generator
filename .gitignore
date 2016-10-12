@@ -35,6 +35,10 @@ Thumbs.db
 /.qmake.cache
 /.qmake.stash
 
+# Executables
+pgr-project
+pgr-projekt
+
 # qtcreator generated files
 *.pro.user*
 
@@ -43,6 +47,21 @@ Thumbs.db
 
 # Vim temporary files
 .*.swp
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+
+# Eclipse generated files
+.project
+.cproject
+.settings/
+
 
 # Visual Studio generated files
 *.ib_pdb_index
