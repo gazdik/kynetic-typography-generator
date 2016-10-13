@@ -1,20 +1,20 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += console c++11 link_pkgconfig
 CONFIG -= app_bundle
 CONFIG -= qt
+PKGCONFIG += freetype2 gl glu ftgl
 
 LIBS += -lglut
 
 SOURCES += main.cpp \
     inputstring.cpp \
     node.cpp \
-    sequencerunner.cpp
-
-unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG += freetype2 gl glu ftgl
+    sequencerunner.cpp \
+    testeffect.cpp
 
 HEADERS += \
     inputstring.h \
     effect.h \
     node.h \
-    sequencerunner.h
+    sequencerunner.h \
+    testeffect.h

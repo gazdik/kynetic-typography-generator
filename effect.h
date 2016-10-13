@@ -8,8 +8,8 @@
 class Effect
 {
 public:
-    virtual void run(std::string str, Node& inputNode);
-    virtual bool isOK(InputString& inputString);
+    virtual void run(std::string str, Node& inputNode) = 0;
+    virtual bool acceptsString(InputString& inputString) = 0;
 };
 
 #endif // EFFECT_H
