@@ -28,20 +28,13 @@ void setCamera()
 
 void do_display()
 {
-
     glTranslatef(OX, OY,0);
 
-    glPushMatrix();
-        glRotatef(40.0, 0, 1, 0);
+    glRotatef(40.0, 0, 1, 0);
 
-        glColor3f(0.4, 0.4, 0.4);
-        int renderMode = FTGL::RENDER_FRONT | FTGL::RENDER_BACK;
-        simpleLayout.Render(myString, -1, FTPoint(), renderMode);
-    glPopMatrix();
-
-//    glPushMatrix();
-//        renderFontmetrics();
-//    glPopMatrix();
+    glColor3f(0.4, 0.4, 0.4);
+    simpleLayout.Render(myString, -1, FTPoint(),
+                        FTGL::RENDER_FRONT | FTGL::RENDER_BACK);
 }
 
 void display()
