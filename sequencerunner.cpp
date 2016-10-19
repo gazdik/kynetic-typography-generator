@@ -1,6 +1,9 @@
 #include "sequencerunner.h"
 
-SequenceRunner::SequenceRunner(std::vector<Effect> effects)
+// debug
+#include <iostream>
+
+SequenceRunner::SequenceRunner(std::vector<Effect*> effects)
 {
     // TODO: Implement method body
 }
@@ -8,4 +11,5 @@ SequenceRunner::SequenceRunner(std::vector<Effect> effects)
 void SequenceRunner::run(std::string str, int seed)
 {
     // TODO: Implement method body
+    std::cout << str << std::endl;
 }

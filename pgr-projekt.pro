@@ -10,11 +10,13 @@ SOURCES += main.cpp \
     inputstring.cpp \
     node.cpp \
     sequencerunner.cpp \
-    testeffect.cpp
+    testeffect.cpp \
+    kinetypogen.cpp
 
 HEADERS += \
     inputstring.h \
     effect.h \
     node.h \
     sequencerunner.h \
-    testeffect.h
+    testeffect.h \
+    kinetypogen.h

@@ -8,7 +8,7 @@
 class SequenceRunner
 {
 public:
-    SequenceRunner(std::vector<Effect> effects);
+    SequenceRunner(std::vector<Effect*> effects);
     void run(std::string str, int seed);
 };
 
