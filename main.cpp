@@ -1,11 +1,17 @@
 #include <iostream>
-#include <GL/glut.h>
 #include <FTGL/ftgl.h>
 #include <assert.h>
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+#include <string>
+#include <vector>
+
 using namespace std;
 
-char myString[4096] = "Kinetic Typography Generator";
+char myString[4096] = "Kiňěťíč Ťýpógráphy Gěneratoř";
 
 // GL vars
 GLint w_win = 640, h_win = 480;
@@ -18,9 +24,9 @@ FTSimpleLayout simpleLayout;
 
 void setCamera()
 {
-    glMatrixMode (GL_PROJECTION);
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity ();
-    gluPerspective(90, (float)w_win / (float)h_win, 1, 1000);
+    gluPerspective(90, (float) w_win / (float) h_win, 1, 1000);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(0.0, 0.0, (float)h_win / 2.0f, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
@@ -49,7 +55,6 @@ void display()
 
     glPopMatrix();
 
-    glutSwapBuffers();
 }
 
 FTFont *getFont(const char* file)
@@ -108,18 +113,61 @@ void myinit(const char* file)
 
 int main(int argc, char *argv[])
 {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB | GLUT_DOUBLE | GLUT_MULTISAMPLE);
-    glutInitWindowSize(w_win, h_win);
-    glutCreateWindow("Kinetic Typography Generator");
+  // Init GLFW
+  glfwInit();
+  // Set all the required options for GLFW
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+//  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+  glfwWindowHint(GLFW_SRGB_CAPABLE, GL_TRUE);
+  glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
 
-    glutDisplayFunc(display);
-    glutReshapeFunc(myReshape);
-    glutIdleFunc(display);
+  // Create a GLFWwindow object that we can use for GLFW's functions
+  GLFWwindow *window = glfwCreateWindow(w_win, h_win, "Learn OpenGL", nullptr, nullptr);
+  glfwMakeContextCurrent(window);
+  if (window == nullptr)
+  {
+    cout << "Failed to create GLFW window" << endl;
+    glfwTerminate();
+    return -1;
+  }
 
-    myinit("/usr/share/fonts/TTF/DejaVuSans-Bold.ttf");
+  // Set this to true so GLEW knows to use a modern approach to retrieve
+  // function pointers and extensions
+  glewExperimental = GL_TRUE;
+  if (glewInit() != GLEW_OK)
+  {
+    cerr << "Failed to initialize GLEW: err = " << endl;
+    return -1;
+  }
 
-    glutMainLoop();
+  // Define the viewport dimensions
+  int width, height;
+  glfwGetFramebufferSize(window, &width, &height);
+  glViewport(0, 0, width, height);
 
+  myinit("/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf");
+
+    while(!glfwWindowShouldClose(window))
+    {
+      // Check and call events
+      glfwPollEvents();
+
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+      setCamera();
+
+      glPushMatrix();
+
+      do_display();
+
+      glPopMatrix();
+
+      // Swap the buffers
+      glfwSwapBuffers(window);
+    }
+
+    glfwTerminate();
     return 0;
 }
