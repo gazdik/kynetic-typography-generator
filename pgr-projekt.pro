@@ -2,9 +2,10 @@ TEMPLATE = app
 CONFIG += console c++11 link_pkgconfig
 CONFIG -= app_bundle
 CONFIG -= qt
-PKGCONFIG += freetype2 gl glu ftgl
+VPATH += ./src
+PKGCONFIG += freetype2 gl glu glew ftgl
 
-LIBS += -lglut
+LIBS += -lglut -lGLEW -lglfw
 
 SOURCES += main.cpp \
     inputstring.cpp \
