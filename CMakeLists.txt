@@ -5,7 +5,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_BUILD_TYPE Debug)
 
-file(GLOB PROJECT_SRC *.cpp)
+include_directories(src)
+file(GLOB PROJECT_SRC src/*.cpp)
 add_executable(pgr-project ${PROJECT_SRC})
 
 find_package(OpenGL REQUIRED)

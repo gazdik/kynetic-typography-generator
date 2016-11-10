@@ -1,20 +1,20 @@
-#include <iostream>
-#include <FTGL/ftgl.h>
-#include <assert.h>
-
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
-#include <cmath>
-#include <cstdlib>
-#include <string>
-#include <vector>
+#include <FTGL/ftgl.h>
 
 #define glm_force_radians
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <cmath>
+#include <cstdlib>
+#include <cassert>
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
 
 static GLuint shaderProgram;
 static GLint vertexCoordAttribute;
@@ -37,6 +37,7 @@ char myString[4096] = "Kiňěťíč Ťýpógráphy Gěneratoř";
 
 // GL vars
 GLint w_win = 640, h_win = 480;
+GLint screen_width = 640, screen_height = 480;
 
 const float OX = -270;
 const float OY = 40;
@@ -54,10 +55,9 @@ static void RenderScene(void)
 
     glEnable(GL_DEPTH_TEST);
 
-
-    int screen_width = 1;
-    int screen_height = 1;
     float angle = now * 45;
+    GLint screen_height = 1;
+    GLint screen_width = 1;
     glm::vec3 axis_y(0, 1, 0);
     glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis_y);
 
@@ -65,14 +65,14 @@ static void RenderScene(void)
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
 
     glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
-    glm::mat4 projection = glm::perspective(45.0f, 1.0f*screen_width/screen_height, 0.1f, 10.0f);
+    glm::mat4 projection = glm::perspective(45.0f, 1.0f*screen_width/screen_height, 1.0f, 20.0f);
 
     glm::mat4 mvp = projection * view * model * scale * anim;
 
     glUseProgram(shaderProgram);
     glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, glm::value_ptr(mvp));
 
-    font->Render("Great Job!");
+    font->Render(myString);
 
     glfwSwapBuffers(window);
 
@@ -88,6 +88,7 @@ static void RenderScene(void)
 }
 
 void onReshape(GLFWwindow* win, int width, int height) {
+
     glViewport(0, 0, width, height);
 }
 
@@ -264,8 +265,8 @@ int main(int argc, char **argv)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-//    glfwSetErrorCallback(error_callback);
-    window = glfwCreateWindow( 640, 480, "FTGL GL3 Test", NULL, NULL);
+    glfwSetErrorCallback(error_callback);
+    window = glfwCreateWindow( screen_width, screen_height, "FTGL GL3 Test", NULL, NULL);
     if( window == NULL ){
         //fprintf( stderr, "Failed to open GLFW window. \n" );
         glfwTerminate();
@@ -295,7 +296,7 @@ int main(int argc, char **argv)
 
     font->ShaderLocations(vertexCoordAttribute, vertexNormalAttribute, vertexOffsetUniform);
     font->FaceSize(90);
-    font->Depth(100);
+    font->Depth(10);
     font->Outset(1, 4);
     font->CharMap(ft_encoding_unicode);
 
@@ -303,6 +304,7 @@ int main(int argc, char **argv)
         RenderScene();
     }
 
+    glfwTerminate();
     return EXIT_SUCCESS;
 }
 
@@ -322,7 +324,8 @@ static const char * vs_source[] =
 "void main(void) {                                              \n"
 "  gl_Position = mvp * (vec4(v_coord, 1.0) + vec4(pen, 1.0)); \n"
 // "  f_color = vec3(-v_coord.z/100,0.4,0.9);                    \n"
-"  f_color = vec3((v_normal.x+1)/2,(v_normal.y+1)/2,(v_normal.z+1)/2);  \n"
+//"  f_color = vec3((v_normal.x+0.5)/2,(v_normal.y+0.5)/2,(v_normal.z+0.5)/2);  \n"
+"  f_color = vec3((v_normal.x+0.5)/2,(v_normal.y+0.5)/2,(v_normal.z+0.5)/2);  \n"
 "}                                                              \n"
 };
 
