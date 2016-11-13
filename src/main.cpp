@@ -8,42 +8,63 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <cmath>
-#include <cstdlib>
-#include <cassert>
-#include <string>
-#include <vector>
-#include <iostream>
+#include <GLProgram.h>
+#include <GLView.h>
+
+#include <cstdio>
 using namespace std;
 
-static GLuint shaderProgram;
 static GLint vertexCoordAttribute;
 static GLint vertexNormalAttribute;
 static GLint vertexOffsetUniform;
 static GLint mvpUniform;
 
-void compileShaders();
-void print_log(GLuint object);
-
-static FTFont *font;
-static int lastfps = 0;
+static float seconds = 0;
 static int frames = 0;
 
-static GLFWwindow *window;
-
-using namespace std;
-
 char myString[4096] = "Kiňěťíč Ťýpógráphy Gěneratoř";
-
-// GL vars
-GLint w_win = 640, h_win = 480;
-GLint screen_width = 640, screen_height = 480;
 
 const float OX = -270;
 const float OY = 40;
 
+static GLView *glView;
+static GLProgram *program;
+
 // FTGL vars
+static FTFont *font;
 FTSimpleLayout simpleLayout;
+
+static const char vs_source[] =
+{
+"#version 150                                                   \n"
+"                                                               \n"
+"uniform mat4 mvp;                                              \n"
+"uniform vec3 pen;                                              \n"
+"                                                               \n"
+"in      vec3 v_coord;                                        \n"
+"in      vec3 v_normal;                                         \n"
+"out     vec3 f_color;                                          \n"
+"                                                               \n"
+"void main(void) {                                              \n"
+"  gl_Position = mvp * (vec4(v_coord, 1.0) + vec4(pen, 1.0)); \n"
+// "  f_color = vec3(-v_coord.z/100,0.4,0.9);                    \n"
+//"  f_color = vec3((v_normal.x+0.5)/2,(v_normal.y+0.5)/2,(v_normal.z+0.5)/2);  \n"
+//"  f_color = vec3((v_normal.x)*0.1,(v_normal.y)*0.1,(v_normal.z)*0.1);  \n"
+"  f_color = vec3(0.0f, 0.0f, 0.0f);  \n"
+"}                                                              \n"
+};
+
+static const char fs_source[] =
+{
+"#version 150                                                   \n"
+"                                                               \n"
+"in      vec3 f_color;                                          \n"
+"out     vec4 fragColor;                                        \n"
+"                                                               \n"
+"void main(void) {                                              \n"
+"  fragColor = vec4(f_color.x, f_color.y, f_color.z, 1.0);      \n"
+"}                                                              \n"
+};
 
 static void RenderScene(void)
 {
@@ -56,229 +77,48 @@ static void RenderScene(void)
     glEnable(GL_DEPTH_TEST);
 
     float angle = now * 45;
-    GLint screen_height = 1;
-    GLint screen_width = 1;
     glm::vec3 axis_y(0, 1, 0);
     glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis_y);
 
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.01, 0.01, 0.01));
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(-0.2, 0.3, -4.0));
 
     glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
-    glm::mat4 projection = glm::perspective(45.0f, 1.0f*screen_width/screen_height, 1.0f, 20.0f);
+    glm::mat4 projection = glm::perspective(45.0f, 1.0f*glView->getWidth() / glView->getHeight(), 1.0f, 20.0f);
 
     glm::mat4 mvp = projection * view * model * scale * anim;
 
-    glUseProgram(shaderProgram);
-    glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, glm::value_ptr(mvp));
+    program->use();
+    program->setUniformMatrix4fv(mvpUniform, glm::value_ptr(mvp), 1);
 
-    font->Render(myString);
+//    simpleLayout.Render(myString, -1, FTPoint(), FTGL::RENDER_SIDE);
+    simpleLayout.Render(myString, -1, FTPoint(), FTGL::RENDER_FRONT);
 
-    glfwSwapBuffers(window);
+    glView->swapBuffers();
 
     frames++;
 
-    if(now - lastfps > 5000)
+    if(now - seconds > 1.0)
     {
-        fprintf(stderr, "%i frames in 5.0 seconds = %g FPS\n",
-                frames, frames * 1000. / (now - lastfps));
-        lastfps += 5000;
+        fprintf(stdout, "%i FPS\n",
+                frames);
         frames = 0;
+        seconds += 1.0;
     }
 }
-
-void onReshape(GLFWwindow* win, int width, int height) {
-
-    glViewport(0, 0, width, height);
-}
-
-void error_callback(int error, const char* description)
-{
-    fputs(description, stderr);
-}
-
-
-//
-//void setCamera()
-//{
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity ();
-//    gluPerspective(90, (float) w_win / (float) h_win, 1, 1000);
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//    gluLookAt(0.0, 0.0, (float)h_win / 2.0f, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-//}
-//
-//void do_display()
-//{
-//    glTranslatef(OX, OY,0);
-//
-//    glRotatef(40.0, 0, 1, 0);
-//
-//    glColor3f(0.4, 0.4, 0.4);
-//    simpleLayout.Render(myString, -1, FTPoint(),
-//                        FTGL::RENDER_FRONT | FTGL::RENDER_BACK);
-//}
-//
-//void display()
-//{
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//    setCamera();
-//
-//    glPushMatrix();
-//
-//        do_display();
-//
-//    glPopMatrix();
-//
-//}
-//
-//FTFont *getFont(const char* file)
-//{
-//    FTFont *font = new FTPolygonFont(file);
-//    if (font->Error())
-//    {
-//        fprintf(stderr, "Failed to open font %s", file);
-//        exit(1);
-//    }
-//
-//    if(!font->FaceSize(50))
-//    {
-//        fprintf(stderr, "Failed to set size");
-//        exit(1);
-//    }
-//
-//    font->CharMap(ft_encoding_unicode);
-//
-//    return font;
-//}
-//
-//void myReshape(int w, int h)
-//{
-//    glMatrixMode (GL_MODELVIEW);
-//    glViewport (0, 0, w, h);
-//    glLoadIdentity();
-//
-//    w_win = w;
-//    h_win = h;
-//    setCamera();
-//}
-//
-//void myinit(const char* file)
-//{
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    glClearColor(1.0, 1.0, 1.0, 0.0);
-//    glColor3f(0, 0, 0);
-//
-//    glEnable(GL_CULL_FACE);
-//    glFrontFace(GL_CCW);
-//
-//    glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_CULL_FACE);
-//    glShadeModel(GL_SMOOTH); // GL_FLAT would be also OK.
-//
-//    glEnable(GL_POLYGON_OFFSET_LINE);
-//    glPolygonOffset(1.0, 1.0);
-//
-//    setCamera();
-//
-//    // Configure the SimpleLayout for text
-//    simpleLayout.SetLineLength(600.0f);
-//    simpleLayout.SetFont(getFont(file));
-//}
-
-//int main(int argc, char *argv[])
-//{
-//  // Init GLFW
-//  glfwInit();
-//  // Set all the required options for GLFW
-//  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-//  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-//  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-////  glfwWindowHint(GLFW_SRGB_CAPABLE, GL_TRUE);
-//  glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
-//
-//  // Create a GLFWwindow object that we can use for GLFW's functions
-//  GLFWwindow *window = glfwCreateWindow(w_win, h_win, "Learn OpenGL", nullptr, nullptr);
-//  glfwMakeContextCurrent(window);
-//  if (window == nullptr)
-//  {
-//    cout << "Failed to create GLFW window" << endl;
-//    glfwTerminate();
-//    return -1;
-//  }
-//
-//  // Set this to true so GLEW knows to use a modern approach to retrieve
-//  // function pointers and extensions
-//  glewExperimental = GL_TRUE;
-//  if (glewInit() != GLEW_OK)
-//  {
-//    cerr << "Failed to initialize GLEW: err = " << endl;
-//    return -1;
-//  }
-//
-//  // Define the viewport dimensions
-//  int width, height;
-//  glfwGetFramebufferSize(window, &width, &height);
-//  glViewport(0, 0, width, height);
-//
-//  myinit("/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf");
-//
-//    while(!glfwWindowShouldClose(window))
-//    {
-//      // Check and call events
-//      glfwPollEvents();
-//
-//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-//
-//      setCamera();
-//
-//      glPushMatrix();
-//
-//      do_display();
-//
-//      glPopMatrix();
-//
-//      // Swap the buffers
-//      glfwSwapBuffers(window);
-//    }
-//
-//    glfwTerminate();
-//    return 0;
-//}
 
 int main(int argc, char **argv)
 {
-    // From config.h
-    char const *file = "/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf";
+    char const *file = "fonts/DejaVuSerif-Bold.ttf";
 
-    // Initialise GLFW
-    if(!glfwInit()) {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
-        return -1;
-    }
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glView = new GLView("KyneTypoGen", 640, 480);
+    GLFWwindow *window = glView->getWindow();
 
-    glfwSetErrorCallback(error_callback);
-    window = glfwCreateWindow( screen_width, screen_height, "FTGL GL3 Test", NULL, NULL);
-    if( window == NULL ){
-        //fprintf( stderr, "Failed to open GLFW window. \n" );
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-//    glfwSetFramebufferSizeCallback(window, onReshape);
-
-    glewExperimental = GL_TRUE;
-    glewInit();
-    compileShaders();
+    program = new GLProgram(vs_source, fs_source);
+    vertexCoordAttribute = program->getAttribLocation("v_coord");
+    vertexNormalAttribute = program->getAttribLocation("v_normal");
+    mvpUniform = program->getUniformLocation("mvp");
+    vertexOffsetUniform = program->getUniformLocation("pen");
 
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
@@ -296,147 +136,16 @@ int main(int argc, char **argv)
 
     font->ShaderLocations(vertexCoordAttribute, vertexNormalAttribute, vertexOffsetUniform);
     font->FaceSize(90);
-    font->Depth(10);
-    font->Outset(1, 4);
+    font->Depth(3);
+//    font->Outset(1, 2);
     font->CharMap(ft_encoding_unicode);
+
+    simpleLayout.SetFont(font);
+    simpleLayout.SetLineLength(600.0f);
 
     while (!glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS) {
         RenderScene();
     }
 
-    glfwTerminate();
     return EXIT_SUCCESS;
 }
-
-
-
-static const char * vs_source[] =
-{
-"#version 150                                                   \n"
-"                                                               \n"
-"uniform mat4 mvp;                                              \n"
-"uniform vec3 pen;                                              \n"
-"                                                               \n"
-"in      vec3 v_coord;                                        \n"
-"in      vec3 v_normal;                                         \n"
-"out     vec3 f_color;                                          \n"
-"                                                               \n"
-"void main(void) {                                              \n"
-"  gl_Position = mvp * (vec4(v_coord, 1.0) + vec4(pen, 1.0)); \n"
-// "  f_color = vec3(-v_coord.z/100,0.4,0.9);                    \n"
-//"  f_color = vec3((v_normal.x+0.5)/2,(v_normal.y+0.5)/2,(v_normal.z+0.5)/2);  \n"
-"  f_color = vec3((v_normal.x+0.5)/2,(v_normal.y+0.5)/2,(v_normal.z+0.5)/2);  \n"
-"}                                                              \n"
-};
-
-static const char * fs_source[] =
-{
-"#version 150                                                   \n"
-"                                                               \n"
-"in      vec3 f_color;                                          \n"
-"out     vec4 fragColor;                                        \n"
-"                                                               \n"
-"void main(void) {                                              \n"
-"  fragColor = vec4(f_color.x, f_color.y, f_color.z, 1.0);      \n"
-"}                                                              \n"
-};
-
-
-void compileShaders() {
-
-    printf("Compiling shaders...\n");
-
-    GLint link_ok = GL_FALSE;
-
-    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-
-    glShaderSource(vs, 1, (const GLchar**)&vs_source, 0);
-    glShaderSource(fs, 1, (const GLchar**)&fs_source, 0);
-
-    /* Compile our shader objects */
-    glCompileShader(vs);
-    GLint compile_ok = GL_FALSE;
-    glGetShaderiv(vs, GL_COMPILE_STATUS, &compile_ok);
-    if (compile_ok == GL_FALSE) {
-        fprintf(stderr, "vertex shader:");
-        print_log(vs);
-        glDeleteShader(vs);
-        return;
-    }
-    glCompileShader(fs);
-    compile_ok = GL_FALSE;
-    glGetShaderiv(fs, GL_COMPILE_STATUS, &compile_ok);
-    if (compile_ok == GL_FALSE) {
-        fprintf(stderr, "fragment shader:");
-        print_log(fs);
-        glDeleteShader(fs);
-        return;
-    }
-
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vs);
-    glAttachShader(shaderProgram, fs);
-    glLinkProgram(shaderProgram);
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &link_ok);
-    if (!link_ok) {
-      fprintf(stderr, "glLinkProgram:");
-      print_log(shaderProgram);
-      return;
-    }
-
-    const char* attribute_name;
-    attribute_name = "v_coord";
-    vertexCoordAttribute = glGetAttribLocation(shaderProgram, attribute_name);
-    if (vertexCoordAttribute == -1) {
-      fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
-      return;
-    }
-
-
-    attribute_name = "v_normal";
-    vertexNormalAttribute = glGetAttribLocation(shaderProgram, attribute_name);
-    if (vertexNormalAttribute == -1) {
-      fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
-      return;
-    }
-
-    const char* uniform_name;
-    uniform_name = "mvp";
-    mvpUniform = glGetUniformLocation(shaderProgram, uniform_name);
-    if (mvpUniform == -1) {
-      fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-      return;
-    }
-
-    uniform_name = "pen";
-    vertexOffsetUniform = glGetUniformLocation(shaderProgram, uniform_name);
-    if (vertexOffsetUniform == -1) {
-      fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-      return;
-    }
-}
-
-void print_log(GLuint object)
-{
-  GLint log_length = 0;
-  if (glIsShader(object))
-    glGetShaderiv(object, GL_INFO_LOG_LENGTH, &log_length);
-  else if (glIsProgram(object))
-    glGetProgramiv(object, GL_INFO_LOG_LENGTH, &log_length);
-  else {
-    fprintf(stderr, "printlog: Not a shader or a program\n");
-    return;
-  }
-
-  char* log = (char*)malloc(log_length);
-
-  if (glIsShader(object))
-    glGetShaderInfoLog(object, log_length, NULL, log);
-  else if (glIsProgram(object))
-    glGetProgramInfoLog(object, log_length, NULL, log);
-
-  fprintf(stderr, "%s", log);
-  free(log);
-}
-
