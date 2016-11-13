@@ -3,6 +3,7 @@ CONFIG += console c++11 link_pkgconfig
 CONFIG -= app_bundle
 CONFIG -= qt
 VPATH += ./src
+INCLUDEPATH += ./src
 PKGCONFIG += freetype2 gl glu glew ftgl
 
 LIBS += -lglut -lGLEW -lglfw
@@ -12,7 +13,9 @@ SOURCES += main.cpp \
     node.cpp \
     sequencerunner.cpp \
     testeffect.cpp \
-    kinetypogen.cpp
+    kinetypogen.cpp \
+    GLProgram.cpp \
+    GLView.cpp \
 
 HEADERS += \
     inputstring.h \
@@ -20,4 +23,7 @@ HEADERS += \
     node.h \
     sequencerunner.h \
     testeffect.h \
-    kinetypogen.h
+    kinetypogen.h \
+    macros.h \
+    GLProgram.h \
+    GLView.h
