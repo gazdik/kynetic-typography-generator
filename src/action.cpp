@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cfloat>
 #include <climits>
+#include <cstdarg>
 
 using namespace std;
 
@@ -22,12 +23,13 @@ void Action::step(float dt)
 {
     _elapsedTime += dt;
 
-    if (_elapsedTime > _duration) {
+    float interval = _elapsedTime / max(FLT_EPSILON, _duration);
+
+    if (interval > 1.0f) {
+        interval = 1.0f;
         _elapsedTime = _duration;
         _running = false;
     }
-
-    float interval = _elapsedTime / max(FLT_EPSILON, _duration);
 
     update(interval);
 }
@@ -47,6 +49,12 @@ void Action::setDuration(float duration)
 {
     _duration = duration <= 0 ? FLT_EPSILON : duration;
 }
+
+float Action::getDuration()
+{
+    return _duration;
+}
+
 
 RotateBy::RotateBy(float duration, float angle) :
     Action (duration)
@@ -236,3 +244,150 @@ void ScaleTo::init()
     _startScale = _previousScale = _node->getScale();
     _scaleBy = _endScale - _startScale;
 }
+
+Sequence::Sequence(Action* action1, ...) :
+        Action (0.0f)
+{
+    _actions.push_back(action1);
+
+    va_list actions;
+
+    va_start(actions, action1);
+    while(action1)
+    {
+        action1 = va_arg(actions, Action *);
+        if (action1 != nullptr)
+            _actions.push_back(action1);
+    }
+    va_end(actions);
+
+    for (auto action: _actions) {
+        _duration += action->getDuration();
+    }
+
+    _currentAction = _actions.front();
+}
+
+Sequence::~Sequence()
+{
+    for (auto action: _actions)
+        delete action;
+}
+
+void Sequence::update(float interval)
+{
+}
+
+void Sequence::init()
+{
+    _currentAction->setNode(_node);
+}
+
+void Sequence::step(float dt)
+{
+    if (!_currentAction->isRunning()) {
+        setNewAction();
+
+        if (_actions.empty()) {
+            _running = false;
+            return;
+        }
+    }
+
+    // Useless. Maybe for future use.
+    _elapsedTime += dt;
+
+    _currentAction->step(dt);
+}
+
+void Sequence::setNewAction()
+{
+    // Delete old action
+    delete _currentAction;
+    _actions.pop_front();
+
+    // Set new one
+    if (! _actions.empty()) {
+        _currentAction = _actions.front();
+        _currentAction->setNode(_node);
+    }
+}
+
+Spawn::Spawn(Action* action1, ...) :
+        Action(0.0f)
+{
+    _actions.push_back(action1);
+
+    va_list actions;
+
+    va_start(actions, action1);
+    while(action1)
+    {
+        action1 = va_arg(actions, Action *);
+        if (action1 != nullptr)
+            _actions.push_back(action1);
+    }
+    va_end(actions);
+
+    for (auto action: _actions)
+        _duration = max(_duration, action->getDuration());
+}
+
+Spawn::~Spawn()
+{
+}
+
+void Spawn::update(float interval)
+{
+}
+
+void Spawn::init()
+{
+    for (auto action: _actions)
+        action->setNode(_node);
+}
+
+void Spawn::step(float dt)
+{
+    for (auto it = _actions.begin(); it != _actions.end(); /* nothing */) {
+        auto action = *it;
+
+        action->step(dt);
+
+        if (action->isRunning()) {
+            it++;
+        }
+        else {
+            delete *it;
+            it = _actions.erase(it);
+        }
+    }
+
+    if (_actions.empty())
+        _running = false;
+}
+
+void Spawn::setNode(Node* node)
+{
+    _node = node;
+    for (auto action: _actions)
+        action->setNode(node);
+}
+
+Delay::Delay(float duration) :
+        Action(duration)
+{
+}
+
+Delay::~Delay()
+{
+}
+
+void Delay::update(float interval)
+{
+}
+
+void Delay::init()
+{
+}
+

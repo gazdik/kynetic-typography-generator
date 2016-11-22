@@ -13,6 +13,8 @@ ActionManager::ActionManager()
 
 ActionManager::~ActionManager()
 {
+    for (auto action: _actions)
+        delete action;
 }
 
 ActionManager* ActionManager::getInstance()

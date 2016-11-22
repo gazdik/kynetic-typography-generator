@@ -10,6 +10,9 @@
 
 #include "node.h"
 
+#include <vector>
+#include <deque>
+
 class Action
 {
 public:
@@ -43,7 +46,7 @@ public:
      * Set the node
      * @param node
      */
-    void setNode(Node *node);
+    virtual void setNode(Node *node);
 
     /**
      * Set duration of action
@@ -51,11 +54,59 @@ public:
      */
     void setDuration(float duration);
 
+    /**
+     * Get action's duration
+     * @return Duration in seconds
+     */
+    float getDuration();
+
 protected:
     Node *_node = nullptr;
     bool _running = true;
     float _duration;
     float _elapsedTime = 0.0f;
+};
+
+class Sequence : public Action
+{
+public:
+    Sequence(Action *action1, ...);
+    virtual ~Sequence();
+
+    virtual void update(float interval) override;
+    virtual void init() override;
+    virtual void step(float dt) override;
+
+private:
+    void setNewAction();
+
+    std::deque<Action *> _actions;
+    Action *_currentAction;
+};
+
+class Spawn : public Action
+{
+public:
+    Spawn(Action *action1, ...);
+    virtual ~Spawn();
+
+    virtual void update(float interval) override;
+    virtual void init() override;
+    virtual void step(float dt) override;
+    virtual void setNode(Node *node) override;
+
+private:
+    std::vector<Action *> _actions;
+};
+
+class Delay : public Action
+{
+public:
+    Delay(float duration);
+    virtual ~Delay();
+
+    virtual void update(float interval) override;
+    virtual void init() override;
 };
 
 
@@ -143,7 +194,7 @@ private:
 };
 
 /**
- * It modifies the node alpha value from current value to 1.0.
+ * Modify the node alpha value from current value to 1.0.
  */
 class FadeIn: public Action
 {
@@ -159,7 +210,7 @@ private:
 };
 
 /**
- * It modifies the node alpha value from current value to 0.0
+ * Modify the node alpha value from current value to 0.0
  */
 class FadeOut: public Action
 {
