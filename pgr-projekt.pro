@@ -11,6 +11,7 @@ LIBS += -lglut -lGLEW -lglfw
 SOURCES += main.cpp \
     inputstring.cpp \
     node.cpp \
+    triangle.cpp \
     sequencerunner.cpp \
     testeffect.cpp \
     kinetypogen.cpp \
@@ -21,6 +22,7 @@ HEADERS += \
     inputstring.h \
     effect.h \
     node.h \
+    triangle.h \
     sequencerunner.h \
     testeffect.h \
     kinetypogen.h \

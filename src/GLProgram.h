@@ -5,8 +5,8 @@
  *      Author: gazdik
  */
 
-#ifndef SRC_SHADER_H_
-#define SRC_SHADER_H
+#ifndef SRC_GLPROGRAM_H_
+#define SRC_GLPROGRAM_H_
 
 #include <string>
 #include <fstream>
@@ -147,4 +147,4 @@ private:
   GLint _program = 0; // the program ID
 };
 
-#endif /* SRC_SHADER_H_ */
+#endif /* SRC_GLPROGRAM_H_ */
