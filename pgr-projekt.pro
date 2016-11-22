@@ -9,6 +9,8 @@ PKGCONFIG += freetype2 gl glu glew ftgl
 LIBS += -lglut -lGLEW -lglfw
 
 SOURCES += main.cpp \
+    action.cpp\
+    actionmanager.cpp \
     inputstring.cpp \
     node.cpp \
     triangle.cpp \
@@ -20,6 +22,8 @@ SOURCES += main.cpp \
 
 HEADERS += \
     inputstring.h \
+    action.h \
+    actionmanager.h \
     effect.h \
     node.h \
     triangle.h \
