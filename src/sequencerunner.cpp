@@ -3,13 +3,17 @@
 // debug
 #include <iostream>
 
-SequenceRunner::SequenceRunner(std::vector<Effect*> effects)
+SequenceRunner::SequenceRunner(std::vector<Effect*> &effects)
 {
+    _effects = effects;
     // TODO: Implement method body
 }
 
-void SequenceRunner::run(std::string str, int seed)
+void SequenceRunner::run(std::string str, int seed, Triangle &mainNode)
 {
-    // TODO: Implement method body
-    std::cout << str << std::endl;
+    // TODO: Implement text reading loop
+    srand(seed);
+
+    int effectIndex = rand() % _effects.size();
+    _effects[effectIndex]->run(str, mainNode);
 }

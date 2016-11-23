@@ -4,11 +4,12 @@
 #include <string>
 #include "inputstring.h"
 #include "node.h"
+#include "triangle.h"
 
 class Effect
 {
 public:
-    virtual void run(std::string str, Node& inputNode) = 0;
+    virtual void run(std::string str, Triangle& inputNode) = 0;
     virtual bool acceptsString(InputString& inputString) = 0;
 };
 

@@ -8,7 +8,7 @@ PKGCONFIG += freetype2 gl glu glew ftgl
 
 LIBS += -lglut -lGLEW -lglfw
 
-SOURCES += main.cpp \
+SOURCES += kinetypogen.cpp \
     action.cpp\
     actionmanager.cpp \
     inputstring.cpp \
@@ -16,11 +16,10 @@ SOURCES += main.cpp \
     triangle.cpp \
     sequencerunner.cpp \
     testeffect.cpp \
-    kinetypogen.cpp \
     GLProgram.cpp \
     GLView.cpp \
 
-HEADERS += \
+HEADERS += kinetypogen.h \
     inputstring.h \
     action.h \
     actionmanager.h \
@@ -29,7 +28,6 @@ HEADERS += \
     triangle.h \
     sequencerunner.h \
     testeffect.h \
-    kinetypogen.h \
     macros.h \
     GLProgram.h \
     GLView.h
