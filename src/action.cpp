@@ -11,8 +11,55 @@
 #include <cfloat>
 #include <climits>
 #include <cstdarg>
+#include <cmath>
 
 using namespace std;
+
+float bezierFunction( float t, float p0, float p1, float p2, float p3 )
+{
+    return (powf(1-t,3) * p0
+            + 3 * powf(1-t,2) * t * p1
+            + 3 * (1-t) * powf(t,2) * p2
+            + powf(t,3) * p3 );
+}
+
+/* MIT License
+ *
+ * cubic_bezier - use bezier curve for transition easing function
+ * Copyright (c) 2012 Gaetan Renaudeau <renaudeau.gaetan@gmail.com>
+ */
+
+float A(float aA1, float aA2) { return 1.0f - 3.0f * aA2 + 3.0f * aA1; }
+float B(float aA1, float aA2) { return 3.0f * aA2 - 6.0f * aA1; }
+float C(float aA1) { return 3.0f * aA1; }
+
+/**
+ * Returns x(t) given t, x1 and x2, or y(t) given t, y1 and y2
+ */
+float calcBezier(float aT, float aA1, float aA2)
+{
+    return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
+}
+
+float getSlope(float aT, float aA1, float aA2)
+{
+    return 3.0f * A(aA1, aA2) * aT * aT + 2.0f * B(aA1, aA2) * aT + C(aA1);
+}
+
+float cubic_bezier(float t, float mX1, float mY1, float mX2, float mY2)
+{
+    if (mX1 == mY1 && mX2 == mY2) return t;    // linear
+
+    float aGuessT = t;
+    for (int i = 0; i < 4; i++) {
+        float currentSlope = getSlope(aGuessT, mX1, mX2);
+        if (currentSlope == 0.0f) return aGuessT;
+        float currentX = calcBezier(aGuessT, mX1, mX2) - t;
+        aGuessT -= currentX / currentSlope;
+    }
+
+    calcBezier(aGuessT, mY1, mY2);
+}
 
 Action::Action(float duration)
 {
@@ -391,3 +438,33 @@ void Delay::init()
 {
 }
 
+Ease::Ease(Action* action, float p0, float p1, float p2, float p3) :
+        Action(action->getDuration()), _action { action }, _p0 { p0 },
+        _p1 { p0 }, _p2 { p2 }, _p3 { p3 }
+{
+
+}
+
+Ease::~Ease()
+{
+    delete _action;
+}
+
+void Ease::update(float interval)
+{
+    interval = cubic_bezier(interval, _p0, _p1, _p2, _p3);
+    _action->update(interval);
+    _running = _action->isRunning();
+}
+
+void Ease::init()
+{
+    _action->setNode(_node);
+}
+
+
+void Ease::setNode(Node* node)
+{
+    _node = node;
+    _action->setNode(node);
+}

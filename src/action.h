@@ -84,6 +84,42 @@ private:
     Action *_currentAction;
 };
 
+class Ease : public Action
+{
+public:
+    Ease(Action *action, float p0, float p1, float p2, float p3);
+    virtual ~Ease();
+
+    virtual void update(float interval) override;
+    virtual void init() override;
+    virtual void setNode(Node *node) override;
+
+private:
+    Action *_action;
+    float _p0, _p1, _p2, _p3;
+};
+
+class EaseIt : public Ease
+{
+public:
+    EaseIt(Action *action) : Ease (action, 0.4f, 0.0f, 0.6f, 1.0f) {}
+    virtual ~EaseIt() {}
+};
+
+class EaseOut : public Ease
+{
+public:
+    EaseOut(Action *action) : Ease (action, 0.0f, 0.0f, 0.2f, 1.0f) {}
+    virtual ~EaseOut() {}
+};
+
+class EaseIn : public Ease
+{
+public:
+    EaseIn(Action *action) : Ease (action, 0.4f, 0.0f, 1.0f, 1.0f) {}
+    virtual ~EaseIn() {}
+};
+
 class Spawn : public Action
 {
 public:

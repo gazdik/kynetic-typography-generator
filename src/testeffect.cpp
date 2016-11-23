@@ -5,7 +5,7 @@ void TestEffect::run(std::string str, Triangle &inputNode)
 {
     triangle1 = new Triangle();
     triangle1->setContentSize(100.0f, 100.0f);
-    triangle1->setPosition(100, 100);
+    triangle1->setPosition(350.0f, 350.0f);
     triangle1->setRotation(-45.0f);
     triangle1->setColor(0.99, 0.26, 0.6);
 
@@ -25,6 +25,37 @@ void TestEffect::run(std::string str, Triangle &inputNode)
     triangle1->runAction(new RotateTo(2.0f, 360.0f));
 
     inputNode.addChild(triangle1);
+
+    /*
+     * Eeasing curves
+     */
+    auto triangle3 = new Triangle();
+    triangle3->setRotation(-90.0f);
+    triangle3->setColor(0.13f, 0.59f, 0.95f);
+    triangle3->setContentSize(75.0f, 75.0f);
+    triangle3->setPosition(50.0f, 50.0f);
+    inputNode.addChild(triangle3);
+
+    auto triangle4 = new Triangle(*triangle3);
+    triangle4->setPosition(50.0f, 150.0f);
+    triangle4->setColor(0.85f, 0.26f, 0.21f);
+    inputNode.addChild(triangle4);
+
+    auto triangle5 = new Triangle(*triangle3);
+    triangle5->setPosition(50.0f, 250.0f);
+    triangle5->setColor(0.30f, 0.68f, 0.31f);
+    inputNode.addChild(triangle5);
+
+    auto easeLikeGoogle = new Sequence(new Delay(2.0f),
+            new EaseIt(new MoveBy(2.0f, glm::vec2(700.0f, 0.0f))), nullptr);
+    auto easeIn = new Sequence(new Delay(2.0f),
+            new EaseIn(new MoveBy(2.0f, glm::vec2(700.0f, 0.0f))), nullptr);
+    auto easeOut = new Sequence(new Delay(2.0f),
+            new EaseOut(new MoveBy(2.0f, glm::vec2(700.0f, 0.0f))), nullptr);
+    triangle3->runAction(easeLikeGoogle);
+    triangle4->runAction(easeIn);
+    triangle5->runAction(easeOut);
+
 }
 
 bool TestEffect::acceptsString(InputString &inputString)
