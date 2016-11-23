@@ -58,7 +58,7 @@ float cubic_bezier(float t, float mX1, float mY1, float mX2, float mY2)
         aGuessT -= currentX / currentSlope;
     }
 
-    calcBezier(aGuessT, mY1, mY2);
+    return calcBezier(aGuessT, mY1, mY2);
 }
 
 Action::Action(float duration)
