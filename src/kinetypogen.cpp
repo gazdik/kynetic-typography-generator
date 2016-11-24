@@ -83,24 +83,6 @@ KineTypoGen::KineTypoGen(int& argc, char* argv[])
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // Initialise FTGL stuff
-    font = new FTExtrudeFont(fontFile);
-
-    if(font->Error())
-    {
-        std::ostringstream ss;
-        ss << "Could not load font '" << fontFile << "'" << std::endl;
-        throw new std::runtime_error(ss.str());
-    }
-
-    font->ShaderLocations(vertexCoordAttribute, vertexNormalAttribute, vertexOffsetUniform);
-    font->FaceSize(90);
-    font->Depth(3);
-    font->CharMap(ft_encoding_unicode);
-
-    simpleLayout.SetFont(font);
-    simpleLayout.SetLineLength(600.0f);
 }
 
 int KineTypoGen::run()
@@ -137,10 +119,8 @@ void KineTypoGen::renderScene()
 
     glm::mat4 projection = glm::ortho(0.0f, (float) glView->getWidth(), 0.0f, (float) glView->getHeight(), -10.0f, 100.0f);
 
-    // Render font (transformation doesn't work!)
     program->use();
     program->setUniformMatrix4fv(mvpUniform, glm::value_ptr(projection), 1);
-    simpleLayout.Render(str.c_str(), -1, FTPoint(), FTGL::RENDER_FRONT);
 
     mainNode->render(projection);
 

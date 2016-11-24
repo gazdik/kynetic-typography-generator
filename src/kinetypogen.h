@@ -40,7 +40,9 @@ private:
     void renderScene();
     void readOptions(int& argc, char* argv[]);
 
+    // The only FTGL variable...
     static const char fontFile[];
+
     static const char vsSource[];
     static const char fsSource[];
     static const float OX;
@@ -60,10 +62,6 @@ private:
     // TODO: Replace with a normal container
     //static Node *mainNode;
     Triangle *mainNode;
-
-    // FTGL vars
-    FTFont *font;
-    FTSimpleLayout simpleLayout;
 
     int seed;
     std::string str;

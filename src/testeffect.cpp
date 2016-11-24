@@ -24,7 +24,24 @@ void TestEffect::run(std::string str, Triangle &inputNode)
     triangle1->runAction(new MoveTo(2.0f, glm::vec2(400.0f, 400.0f)));
     triangle1->runAction(new RotateTo(2.0f, 360.0f));
 
+    auto text = new Text(str);
+    text->setPosition(20, 75);
+    text->runAction(new EaseOut(
+        new MoveBy(4, glm::vec2(300, 0))
+    ));
+    text->runAction(new EaseOut(
+        new ScaleBy(2, 0.5f)
+    ));
+    text->runAction(new Sequence(
+        new Delay(1.8f),
+        new EaseOut(
+            new FadeOut(1.0f)
+        ),
+        nullptr
+    ));
+
     inputNode.addChild(triangle1);
+    inputNode.addChild(text);
 
     /*
      * Eeasing curves

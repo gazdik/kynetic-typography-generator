@@ -18,6 +18,7 @@ SOURCES += kinetypogen.cpp \
     testeffect.cpp \
     GLProgram.cpp \
     GLView.cpp \
+    text.cpp
 
 HEADERS += kinetypogen.h \
     inputstring.h \
@@ -30,4 +31,5 @@ HEADERS += kinetypogen.h \
     testeffect.h \
     macros.h \
     GLProgram.h \
-    GLView.h
+    GLView.h \
+    text.h

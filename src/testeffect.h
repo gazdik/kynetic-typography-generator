@@ -3,6 +3,7 @@
 
 #include "effect.h"
 #include "triangle.h"
+#include "text.h"
 #include "action.h"
 
 class TestEffect : public Effect
