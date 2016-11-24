@@ -1,40 +1,6 @@
 #include "kinetypogen.h"
 
 const char KineTypoGen::fontFile[] = "fonts/DejaVuSerif-Bold.ttf";
-const float OX = -270.0f;
-const float OY = 40.0f;
-
-const char KineTypoGen::vsSource[] =
-{
-"#version 330                                                   \n"
-"                                                               \n"
-"uniform mat4 mvp;                                              \n"
-"uniform vec3 pen;                                              \n"
-"                                                               \n"
-"in      vec3 v_coord;                                          \n"
-"in      vec3 v_normal;                                         \n"
-"out     vec3 f_color;                                          \n"
-"                                                               \n"
-"void main(void) {                                              \n"
-"  gl_Position = mvp * (vec4(v_coord, 1.0) + vec4(pen, 1.0));   \n"
-//"  f_color = vec3(-v_coord.z/100,0.4,0.9);                    \n"
-//"  f_color = vec3((v_normal.x+0.5)/2,(v_normal.y+0.5)/2,(v_normal.z+0.5)/2);  \n"
-//"  f_color = vec3((v_normal.x)*0.1,(v_normal.y)*0.1,(v_normal.z)*0.1);  \n"
-"  f_color = vec3(0.0f, 0.0f, 0.0f) + v_normal * 0.1;           \n"
-"}                                                              \n"
-};
-
-const char KineTypoGen::fsSource[] =
-{
-"#version 330                                                   \n"
-"                                                               \n"
-"in      vec3 f_color;                                          \n"
-"out     vec4 fragColor;                                        \n"
-"                                                               \n"
-"void main(void) {                                              \n"
-"  fragColor = vec4(f_color.x, f_color.y, f_color.z, 1.0);      \n"
-"}                                                              \n"
-};
 
 void KineTypoGen::readOptions(int& argc, char* argv[])
 {
@@ -65,17 +31,10 @@ KineTypoGen::KineTypoGen(int& argc, char* argv[])
 
     glView = new GLView("KineTypoGen", 800, 600);
 
-
-    program = new GLProgram(vsSource, fsSource);
-    vertexCoordAttribute = program->getAttribLocation("v_coord");
-    vertexNormalAttribute = program->getAttribLocation("v_normal");
-    mvpUniform = program->getUniformLocation("mvp");
-    vertexOffsetUniform = program->getUniformLocation("pen");
-
     // TODO: Replace with a normal container
-    //mainNode = new Node();
+    //mainNode = new Layer();
     mainNode = new Triangle();
-    mainNode->setContentSize(100.0f, 100.0f);
+    mainNode->setContentSize(0.0f, 0.0f);
 
     // Do the magic here
 
@@ -118,9 +77,6 @@ void KineTypoGen::renderScene()
     ActionManager::getInstance()->update(now);
 
     glm::mat4 projection = glm::ortho(0.0f, (float) glView->getWidth(), 0.0f, (float) glView->getHeight(), -10.0f, 100.0f);
-
-    program->use();
-    program->setUniformMatrix4fv(mvpUniform, glm::value_ptr(projection), 1);
 
     mainNode->render(projection);
 

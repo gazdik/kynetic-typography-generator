@@ -43,24 +43,13 @@ private:
     // The only FTGL variable...
     static const char fontFile[];
 
-    static const char vsSource[];
-    static const char fsSource[];
-    static const float OX;
-    static const float OY;
-
-    GLint vertexCoordAttribute;
-    GLint vertexNormalAttribute;
-    GLint vertexOffsetUniform;
-    GLint mvpUniform;
-
     float seconds = 0;
     int frames = 0;
 
     GLView *glView;
-    GLProgram *program;
 
     // TODO: Replace with a normal container
-    //static Node *mainNode;
+    //static Layer *mainNode;
     Triangle *mainNode;
 
     int seed;
