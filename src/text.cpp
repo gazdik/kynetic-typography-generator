@@ -1,5 +1,7 @@
 #include "text.h"
 
+#include <stdexcept>
+
 Text::Text(std::string str)
 {
     _string = str;
