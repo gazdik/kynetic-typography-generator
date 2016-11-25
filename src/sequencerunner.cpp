@@ -11,7 +11,7 @@ SequenceRunner::SequenceRunner(std::vector<Effect*> &effects)
     _effects = effects;
 }
 
-void SequenceRunner::run(std::string str, int seed, Triangle &mainNode)
+void SequenceRunner::run(std::string str, int seed, Node &mainNode)
 {
     // TODO: Implement text reading loop
     srand(seed);

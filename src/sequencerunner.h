@@ -12,7 +12,7 @@ class SequenceRunner
 {
 public:
     SequenceRunner(std::vector<Effect*> &effects);
-    void run(std::string str, int seed, Triangle &mainNode);
+    void run(std::string str, int seed, Node &mainNode);
 private:
     std::vector<Effect*> _effects;
 };

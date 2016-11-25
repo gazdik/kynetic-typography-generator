@@ -13,6 +13,7 @@
 
 #include <GLProgram.h>
 #include <GLView.h>
+#include "group.h"
 #include "triangle.h"
 #include "actionmanager.h"
 #include "action.h"
@@ -49,9 +50,7 @@ private:
 
     GLView *glView;
 
-    // TODO: Replace with a normal container
-    //static Layer *mainNode;
-    Triangle *mainNode;
+    Group *mainNode;
 
     int seed;
     std::string str;

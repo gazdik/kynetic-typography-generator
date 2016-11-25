@@ -31,10 +31,7 @@ KineTypoGen::KineTypoGen(int& argc, char* argv[])
 
     glView = new GLView("KineTypoGen", 800, 600);
 
-    // TODO: Replace with a normal container
-    //mainNode = new Layer();
-    mainNode = new Triangle();
-    mainNode->setContentSize(0.0f, 0.0f);
+    mainNode = new Group();
 
     // Do the magic here
 

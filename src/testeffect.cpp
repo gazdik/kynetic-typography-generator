@@ -1,7 +1,7 @@
 #include "testeffect.h"
 
 
-void TestEffect::run(std::string str, Triangle &inputNode)
+void TestEffect::run(std::string str, Node &inputNode)
 {
     triangle1 = new Triangle();
     triangle1->setContentSize(100.0f, 100.0f);
