@@ -2,6 +2,7 @@
 #define SRC_MACROS_H_
 
 #include <cstdarg>
+#include <cstdio>
 
 template <typename T>
 void UNUSED(T &&)
@@ -16,6 +17,7 @@ void UNUSED(T &&)
 
 inline void log(const char *file, const int line, const char *func, const char *format, ...)
 {
+    using namespace std;
     va_list args;
 
     fprintf(stdout, "LOG %s:%d (%s) | ", file, line, func);
@@ -27,6 +29,7 @@ inline void log(const char *file, const int line, const char *func, const char *
 
 inline void logerror(const char *file, const int line, const char *func, const char *format, ...)
 {
+    using namespace std;
     va_list args;
 
     fprintf(stderr, "\x1b[37;41mERROR %s:%d (%s) | ", file, line, func);
@@ -38,6 +41,7 @@ inline void logerror(const char *file, const int line, const char *func, const c
 
 inline void logwarn(const char *file, const int line, const char *func, const char *format, ...)
 {
+    using namespace std;
     va_list args;
 
     fprintf(stdout, "\x1b[31;1mWARNING %s:%d (%s) | ", file, line, func);
@@ -49,6 +53,7 @@ inline void logwarn(const char *file, const int line, const char *func, const ch
 
 inline void loginfo(const char *file, const int line, const char *func, const char *format, ...)
 {
+    using namespace std;
     va_list args;
 
     fprintf(stdout, "\x1b[36mINFO %s:%d (%s) | ", file, line, func);
@@ -60,6 +65,7 @@ inline void loginfo(const char *file, const int line, const char *func, const ch
 
 inline void logdev(const char* file, const int line, const char* func, const char* format, ...)
 {
+    using namespace std;
     va_list args;
 
     fprintf(stdout, "\x1b[32;1mDEV %s:%d (%s) | ", file, line, func);
