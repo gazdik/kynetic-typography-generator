@@ -9,6 +9,8 @@
 
 using namespace std;
 
+#include "macros.h"
+
 GLProgram::GLProgram(const std::string & vertexSourcePath, const std::string & fragmentSourcePath)
 {
   initWithSourceFiles(vertexSourcePath, fragmentSourcePath);
@@ -33,12 +35,23 @@ void GLProgram::bindAttribLocation(const std::string& attributeName,
 
 GLint GLProgram::getAttribLocation(const std::string& attributeName) const
 {
-  return glGetAttribLocation(_program, attributeName.c_str());
+  GLint location = glGetAttribLocation(_program, attributeName.c_str());
+  if (location < 0)
+      LOGWARN("Attribute with name %s isn't active attribute in GLSL program.",
+              attributeName.c_str());
+
+  return location;
+
 }
 
 GLint GLProgram::getUniformLocation(const std::string& uniformName) const
 {
-  return glGetUniformLocation(_program, uniformName.c_str());
+  GLint location = glGetUniformLocation(_program, uniformName.c_str());
+  if (location < 0)
+      LOGWARN("Uniform with name %s isn't active uniform in GLSL program.",
+              uniformName.c_str());
+
+  return location;
 }
 
 void GLProgram::use()
