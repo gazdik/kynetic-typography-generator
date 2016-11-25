@@ -30,30 +30,47 @@ void Node::addChild(Node* child)
     setAlpha(_alpha);
 }
 
-void Node::setPosition(float x, float y)
+void Node::setPosition(float x, float y, float z)
 {
-    _positionX = x;
-    _positionY = y;
+    _position.x = x;
+    _position.y = y;
+    _position.z = z;
 }
 
-void Node::setPosition(glm::vec2 position)
+void Node::setPosition(const glm::vec3 & position)
 {
-    _positionX = position.x;
-    _positionY = position.y;
+    _position = position;
 }
 
 void Node::setScale(float scale)
 {
-    _scale.x = _scale.y = scale;
+    _scale.x = _scale.y = _scale.z = scale;
 }
 
-void Node::setScale(float scaleX, float scaleY)
+void Node::setScale(float scaleX, float scaleY, float scaleZ)
 {
     _scale.x = scaleX;
     _scale.y = scaleY;
+    _scale.z = scaleZ;
 }
 
-void Node::setRotation(float rotation)
+
+void Node::setXRotation(float rotation)
+{
+    _rotation.x = rotation;
+}
+
+void Node::setYRotation(float rotation)
+{
+    _rotation.y = rotation;
+}
+
+void Node::setZRotation(float rotation)
+{
+    _rotation.z = rotation;
+}
+
+void Node::setRotation(const glm::vec3& rotation)
 {
     _rotation = rotation;
 }
@@ -63,24 +80,26 @@ void Node::setVisible(bool visible)
     _visible = visible;
 }
 
-glm::vec2 Node::getPosition()
+glm::vec3 Node::getPosition()
 {
-    glm::vec2 position;
-    position.x = _positionX;
-    position.y = _positionY;
-
-    return position;
+    return _position;
 }
 
 float Node::getPositionX()
 {
-    return _positionX;
+    return _position.x;
 }
 
 float Node::getPositionY()
 {
-    return _positionY;
+    return _position.y;
 }
+
+float Node::getPositionZ()
+{
+    return _scale.z;
+}
+
 
 float Node::getScaleX()
 {
@@ -92,7 +111,27 @@ float Node::getScaleY()
     return _scale.y;
 }
 
-float Node::getRotation()
+float Node::getScaleZ()
+{
+    return _scale.z;
+}
+
+float Node::getXRotation()
+{
+    return _rotation.x;
+}
+
+float Node::getYRotation()
+{
+    return _rotation.y;
+}
+
+float Node::getZRotation()
+{
+    return _rotation.z;
+}
+
+glm::vec3 Node::getRotation()
 {
     return _rotation;
 }
@@ -100,9 +139,11 @@ float Node::getRotation()
 void Node::update()
 {
     glm::mat4 modelViewMatrix;
-    modelViewMatrix = glm::translate(modelViewMatrix, glm::vec3(_positionX, _positionY, _positionZ));
-    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-    modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3(_scale.x, _scale.y, 1.0));
+    modelViewMatrix = glm::translate(modelViewMatrix, glm::vec3(_position.x, _position.y, _position.z));
+    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3(_scale.x, _scale.y, _scale.z));
 
     _modelViewMatrix = modelViewMatrix;
 }
@@ -154,12 +195,13 @@ glm::vec3 Node::getColor()
     return _color;
 }
 
-glm::vec2 Node::getScale()
+glm::vec3 Node::getScale()
 {
     return _scale;
 }
 
-void Node::setScale(const glm::vec2& scale)
+void Node::setScale(const glm::vec3& scale)
 {
     _scale = scale;
 }
+

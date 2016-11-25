@@ -37,25 +37,33 @@ public:
      */
     void runAction(Action *action);
 
-    void setPosition(float x, float y);
-    void setPosition(glm::vec2 position);
+    void setPosition(float x, float y, float z = 0.0f);
+    void setPosition(const glm::vec3 &position);
     void setScale(float scale);
-    void setScale(float scaleX, float scaleY);
-    void setScale(const glm::vec2 & scale);
-    void setRotation(float rotation);
+    void setScale(float scaleX, float scaleY, float scaleZ);
+    void setScale(const glm::vec3 & scale);
+    void setXRotation(float rotation);
+    void setYRotation(float rotation);
+    void setZRotation(float rotation);
+    void setRotation(const glm::vec3 & rotation);
     void setVisible(bool visible);
     void setAlpha(float alpha);
     void setContentSize(float width, float height);
     void setColor(const glm::vec3 & color);
     void setColor(float red, float green, float blue);
 
-    glm::vec2 getPosition();
+    glm::vec3 getPosition();
     float getPositionX();
     float getPositionY();
-    glm::vec2 getScale();
+    float getPositionZ();
+    glm::vec3 getScale();
     float getScaleX();
     float getScaleY();
-    float getRotation();
+    float getScaleZ();
+    float getXRotation();
+    float getYRotation();
+    float getZRotation();
+    glm::vec3 getRotation();
     float getAlpha();
     glm::vec3 getColor();
     bool isVisible();
@@ -68,16 +76,14 @@ protected:
     virtual void initBuffers() = 0;
 
     /**
-     * Set uniforms and draw the node
-     * @param transform
+     * Bind vertex array object, set uniforms and call glDraw
+     * @param transform model-view-projection matrix
      */
     virtual void draw(const glm::mat4 & transform) = 0;
 
-    float _positionX = 0.0f;      ///< Position on x-axis
-    float _positionY = 0.0f;      ///< Position on y-axis
-    float _positionZ = 0.0f;      ///< Position on z-axis
-    glm::vec2 _scale = glm::vec2(1.0, 1.0);             ///< Scaling factor on x and y axes
-    float _rotation = 0.0f;       ///< Rotation angle
+    glm::vec3 _position = glm::vec3(0.0f, 0.0f, 0.0f);  ///< Position on x,y and z-axis
+    glm::vec3 _scale = glm::vec3(1.0, 1.0, 1.0);             ///< Scaling factor on x and y axes
+    glm::vec3 _rotation;
     float _alpha;                 ///< Alpha value
     glm::vec3 _color = glm::vec3(0.0f, 0.0f, 0.0f);     ///< Node color
     bool _visible = true;         ///< Visibility

@@ -149,84 +149,90 @@ public:
 class MoveBy: public Action
 {
 public:
-    MoveBy(float duration, const glm::vec2 & vector);
+    MoveBy(float duration, const glm::vec3 & vector);
     virtual ~MoveBy();
 
     virtual void update(float interval) override;
     virtual void init() override;
 
 protected:
-    glm::vec2 _startPosition;
-    glm::vec2 _previousPosition;
-    glm::vec2 _vector;
+    glm::vec3 _startPosition;
+    glm::vec3 _previousPosition;
+    glm::vec3 _vector;
 };
 
 class MoveTo: public MoveBy
 {
 public:
-    MoveTo(float duration, const glm::vec2 & endPosition);
+    MoveTo(float duration, const glm::vec3 & endPosition);
     virtual ~MoveTo();
 
     virtual void init() override;
 
 protected:
-    glm::vec2 _endPosition;
+    glm::vec3 _endPosition;
 };
 
 class RotateBy: public Action
 {
 public:
-    RotateBy(float duration, float angle);
+    enum class Axis {
+        X, Y, Z,
+    };
+public:
+    RotateBy(float duration, float angle, Axis axis);
+    RotateBy(float duration, float angleX, float angleY, float angleZ);
     virtual ~RotateBy();
 
     virtual void update(float interval) override;
     virtual void init() override;
 
 protected:
-    float _startRotation = 0;
-    float _previousRotation = 0;
-    float _angle;
+    glm::vec3 _startRotation;
+    glm::vec3 _previousRotation;
+    glm::vec3 _angle;
 };
 
 class RotateTo : public RotateBy
 {
 public:
-    RotateTo(float duration, float endAngle);
+    RotateTo(float duration, float angle, Axis axis);
+    RotateTo(float duration, float angleX, float angleY, float angleZ);
     virtual ~RotateTo();
 
     virtual void init() override;
 
 private:
-    float _endAngle;
+    glm::vec3 _endAngle;
 };
 
 class ScaleBy: public Action
 {
 public:
     ScaleBy(float duration, float scaleBy);
-    ScaleBy(float duration, float scaleByX, float scaleByY);
+    ScaleBy(float duration, float scaleByX, float scaleByY, float scaleByZ);
     virtual ~ScaleBy();
 
     virtual void update(float interval) override;
     virtual void init() override;
 
 protected:
-    glm::vec2 _startScale;
-    glm::vec2 _previousScale;
-    glm::vec2 _scaleBy;
+    glm::vec3 _startScale;
+    glm::vec3 _previousScale;
+    glm::vec3 _scaleBy;
 };
 
 class ScaleTo: public ScaleBy
 {
 public:
     ScaleTo(float duration, float endScale);
-    ScaleTo(float duration, float endScaleX, float endScaleY);
+    ScaleTo(float duration, float endScaleX, float endScaleY, float endScaleZ);
     virtual ~ScaleTo();
 
     virtual void init() override;
 
 private:
-    glm::vec2 _endScale;
+    glm::vec3 _endScale;
 };
 
 /**

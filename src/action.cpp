@@ -103,10 +103,30 @@ float Action::getDuration()
 }
 
 
-RotateBy::RotateBy(float duration, float angle) :
-    Action (duration)
+RotateBy::RotateBy(float duration, float angle, Axis axis) :
+    Action (duration), _angle { 0.0, 0.0, 0.0 }
 {
-    _angle = angle;
+    switch (axis) {
+        case Axis::X:
+            _angle.x = angle;
+            break;
+        case Axis::Y:
+            _angle.y = angle;
+            break;
+        case Axis::Z:
+            _angle.z = angle;
+            break;
+        default:
+            break;
+    }
+}
+
+RotateBy::RotateBy(float duration, float angleX, float angleY, float angleZ) :
+        Action(duration)
+{
+    _angle.x = angleX;
+    _angle.y = angleY;
+    _angle.z = angleZ;
 }
 
 RotateBy::~RotateBy()
@@ -116,15 +136,17 @@ RotateBy::~RotateBy()
 void RotateBy::update(float interval)
 {
     // Update start angle (another action can manipulate with the node)
-    float currentRotation = _node->getRotation();
-    float diff = currentRotation - _previousRotation;
+    glm::vec3 currentRotation = _node->getRotation();
+    glm::vec3 diff = currentRotation - _previousRotation;
     _startRotation += diff;
 
-    float newRotation = _startRotation + (_angle * interval);
+    glm::vec3 newRotation = _startRotation + (_angle * interval);
     _node->setRotation(newRotation);
 
     _previousRotation = newRotation;
 }
+
+
 void RotateBy::init()
 {
     _startRotation = _previousRotation = _node->getRotation();
@@ -179,7 +201,7 @@ void FadeOut::init()
     _startAlpha = _node->getAlpha();
 }
 
-MoveBy::MoveBy(float duration, const glm::vec2& vector) :
+MoveBy::MoveBy(float duration, const glm::vec3& vector) :
     Action(duration)
 {
     setDuration(duration);
@@ -193,11 +215,11 @@ MoveBy::~MoveBy()
 void MoveBy::update(float interval)
 {
     // Update start position (another action can manipulate with the node)
-    glm::vec2 currentPosition = _node->getPosition();
-    glm::vec2 diff = currentPosition - _previousPosition;
+    glm::vec3 currentPosition = _node->getPosition();
+    glm::vec3 diff = currentPosition - _previousPosition;
     _startPosition += diff;
 
-    glm::vec2 newPosition = _startPosition + (_vector * interval);
+    glm::vec3 newPosition = _startPosition + (_vector * interval);
     _node->setPosition(newPosition);
 
     _previousPosition = newPosition;
@@ -208,8 +230,8 @@ void MoveBy::init()
     _startPosition = _previousPosition = _node->getPosition();
 }
 
-MoveTo::MoveTo(float duration, const glm::vec2& endPosition) :
-        MoveBy(duration, glm::vec2()), _endPosition { endPosition }
+MoveTo::MoveTo(float duration, const glm::vec3& endPosition) :
+        MoveBy(duration, glm::vec3()), _endPosition { endPosition }
 {
 }
 
@@ -223,14 +245,33 @@ void MoveTo::init()
     _vector = _endPosition - _startPosition;
 }
 
-RotateTo::RotateTo(float duration, float endAngle) :
-        RotateBy(duration, 0.0f), _endAngle { endAngle }
+RotateTo::RotateTo(float duration, float angle, Axis axis) :
+        RotateBy(duration, 0.0f, axis), _endAngle { 0.0f, 0.0f, 0.0f }
+{
+    switch (axis) {
+        case Axis::X:
+            _endAngle.x = angle;
+            break;
+        case Axis::Y:
+            _endAngle.y = angle;
+            break;
+        case Axis::Z:
+            _endAngle.z = angle;
+            break;
+        default:
+            break;
+    }
+}
+
+RotateTo::RotateTo(float duration, float angleX, float angleY, float angleZ) :
+        RotateBy(duration, 0.0f, 0.0f, 0.0f), _endAngle { angleX, angleY, angleZ }
 {
 }
 
 RotateTo::~RotateTo()
 {
 }
+
 
 void RotateTo::init()
 {
@@ -239,12 +280,12 @@ void RotateTo::init()
 }
 
 ScaleBy::ScaleBy(float duration, float scaleBy) :
-        Action(duration), _scaleBy { scaleBy, scaleBy }
+        Action(duration), _scaleBy { scaleBy, scaleBy, scaleBy }
 {
 }
 
-ScaleBy::ScaleBy(float duration, float scaleByX, float scaleByY) :
-        Action(duration), _scaleBy { scaleByX, scaleByY }
+ScaleBy::ScaleBy(float duration, float scaleByX, float scaleByY, float scaleByZ) :
+        Action(duration), _scaleBy { scaleByX, scaleByY, scaleByZ }
 {
 }
 
@@ -255,11 +296,11 @@ ScaleBy::~ScaleBy()
 void ScaleBy::update(float interval)
 {
     // Update start scale (another action can manipulate with the node)
-    glm::vec2 currentScale = _node->getScale();
-    glm::vec2 diff = currentScale - _previousScale;
+    glm::vec3 currentScale = _node->getScale();
+    glm::vec3 diff = currentScale - _previousScale;
     _startScale += diff;
 
-    glm::vec2 newScale = _startScale + (_scaleBy * interval);
+    glm::vec3 newScale = _startScale + (_scaleBy * interval);
     _node->setScale(newScale);
 
     _previousScale = newScale;
@@ -272,13 +313,13 @@ void ScaleBy::init()
 }
 
 ScaleTo::ScaleTo(float duration, float endScale) :
-        ScaleBy(duration, 0.0f), _endScale { endScale, endScale }
+        ScaleBy(duration, 0.0f), _endScale { endScale, endScale, endScale }
 {
 }
 
 
-ScaleTo::ScaleTo(float duration, float endScaleX, float endScaleY) :
-        ScaleBy(duration, 0.0f), _endScale { endScaleX, endScaleY }
+ScaleTo::ScaleTo(float duration, float endScaleX, float endScaleY, float endScaleZ) :
+        ScaleBy(duration, 0.0f), _endScale { endScaleX, endScaleY, endScaleZ }
 {
 }
 
