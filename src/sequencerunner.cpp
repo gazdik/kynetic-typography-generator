@@ -5,8 +5,10 @@
 
 SequenceRunner::SequenceRunner(std::vector<Effect*> &effects)
 {
+    if (effects.size() == 0) {
+        throw std::runtime_error("Cannot create SequenceRunner with no effects");
+    }
     _effects = effects;
-    // TODO: Implement method body
 }
 
 void SequenceRunner::run(std::string str, int seed, Triangle &mainNode)

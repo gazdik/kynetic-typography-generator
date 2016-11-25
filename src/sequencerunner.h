@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <string>
-#include "effect.h"
 #include <random>
+#include <stdexcept>
+
+#include "effect.h"
 
 class SequenceRunner
 {
