@@ -35,6 +35,7 @@ class KineTypoGen
 {
 public:
     KineTypoGen(int& argc, char* argv[]);
+    ~KineTypoGen();
     int run();
 private:
     void renderScene();
