@@ -40,8 +40,6 @@ private:
     FTFont *font;
     FTSimpleLayout simpleLayout;
 
-    GLuint _VBO, _VAO;
-
     GLuint _uTransform, _uColor, _uAlpha;
     GLuint _uPen;
     GLuint _uScale;
