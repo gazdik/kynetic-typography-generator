@@ -7,6 +7,7 @@
 
 #include "action.h"
 
+#include "macros.h"
 #include <algorithm>
 #include <cfloat>
 #include <climits>
@@ -364,6 +365,8 @@ Sequence::~Sequence()
 
 void Sequence::update(float interval)
 {
+    LOGWARN("Sequence cannot be eased.");
+    UNUSED(interval);
 }
 
 void Sequence::init()
@@ -427,6 +430,8 @@ Spawn::~Spawn()
 
 void Spawn::update(float interval)
 {
+    UNUSED(interval);
+    LOGWARN("Spawn action cannot be eased.");
 }
 
 void Spawn::init()
