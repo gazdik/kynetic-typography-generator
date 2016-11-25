@@ -9,6 +9,7 @@
 class Effect
 {
 public:
+    virtual ~Effect() {}
     virtual void run(std::string str, Triangle& inputNode) = 0;
     virtual bool acceptsString(InputString& inputString) = 0;
 };

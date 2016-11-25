@@ -5,12 +5,14 @@
 #include "triangle.h"
 #include "text.h"
 #include "action.h"
+#include "macros.h"
 
 class TestEffect : public Effect
 {
 public:
-    void run(std::string str, Triangle &inputNode);
-    bool acceptsString(InputString &inputString);
+    ~TestEffect() {}
+    void run(std::string str, Triangle &inputNode) override;
+    bool acceptsString(InputString &inputString) override;
 private:
     Triangle *triangle1, *triangle2;
 };

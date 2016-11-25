@@ -77,5 +77,6 @@ void TestEffect::run(std::string str, Triangle &inputNode)
 
 bool TestEffect::acceptsString(InputString &inputString)
 {
+    UNUSED(inputString);
     return true;
 }
