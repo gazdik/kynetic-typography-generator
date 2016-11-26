@@ -145,11 +145,11 @@ private:
    * @param width   Width of the viewport.
    * @param height  Height of the viewport.
    */
-  void setViewport(int x, int y, int width, int height);
+  void setViewport();
 
 private:
-  GLint _viewWidth;
-  GLint _viewHeight;
+  GLint _windowWidth;
+  GLint _windowHeight;
   std::string _viewName;
 
   GLFWwindow *_window = nullptr;

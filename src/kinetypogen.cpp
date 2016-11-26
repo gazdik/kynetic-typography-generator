@@ -1,5 +1,7 @@
 #include "kinetypogen.h"
 
+#include "constants.h"
+
 const char KineTypoGen::fontFile[] = "fonts/DejaVuSerif-Bold.ttf";
 
 void KineTypoGen::readOptions(int& argc, char* argv[])
@@ -73,7 +75,7 @@ void KineTypoGen::renderScene()
 
     ActionManager::getInstance()->update(now);
 
-    glm::mat4 projection = glm::ortho(0.0f, (float) glView->getWidth(), 0.0f, (float) glView->getHeight(), -10.0f, 100.0f);
+    glm::mat4 projection = glm::ortho(0.0f, WINDOW_WIDTH, 0.0f, WINDOW_HEIGHT, -10.0f, 100.0f);
 
     mainNode->render(projection);
 

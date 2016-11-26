@@ -7,10 +7,12 @@
 
 #include "GLView.h"
 
-#include <macros.h>
+#include "macros.h"
+#include "constants.h"
 
 #include <cstring>
 #include <exception>
+
 
 GLView::GLView(const std::string& viewName)
 {
@@ -42,8 +44,8 @@ void GLView::initWithDimension(const std::string& viewName, float width,
     float height)
 {
   _viewName = viewName;
-  _viewWidth = width;
-  _viewHeight = height;
+  _windowWidth = width;
+  _windowHeight = height;
 
   glfwWindowHint(GLFW_SAMPLES, 1);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -62,6 +64,7 @@ void GLView::initWithDimension(const std::string& viewName, float width,
   glfwSetWindowSizeCallback(_window, GLViewInputHandler::onWindowResize);
 
   initGlew();
+  setViewport();
 }
 
 void GLView::initWithFullscreen(const std::string& viewName)
@@ -82,18 +85,20 @@ void GLView::onWindowResize(GLFWwindow* window, int width, int height)
 {
   UNUSED(window);
 
-  _viewWidth = width;
-  _viewHeight = height;
-  setViewport(0, 0, _viewWidth, _viewHeight);
+  _windowWidth = width;
+  _windowHeight = height;
+
+  setViewport();
 }
 
 void GLView::onFramebufferResize(GLFWwindow* window, int width, int height)
 {
   UNUSED(window);
 
-  _viewWidth = width;
-  _viewHeight = height;
-  setViewport(0, 0, _viewWidth, _viewHeight);
+  _windowWidth = width;
+  _windowHeight = height;
+
+  setViewport();
 }
 
 void GLView::initGlew()
@@ -144,12 +149,12 @@ void GLView::setMouseMoveCB(std::function<void(double, double)>& callback)
 
 int GLView::getWidth()
 {
-  return _viewWidth;
+  return _windowWidth;
 }
 
 int GLView::getHeight()
 {
-  return _viewHeight;
+  return _windowHeight;
 }
 
 GLFWwindow* GLView::getWindow() const
@@ -162,9 +167,17 @@ void GLView::onError(int error, const char* description)
   std::fprintf(stderr, "GLFW Error #%d: %s", error, description);
 }
 
-void GLView::setViewport(int x, int y, int width, int height)
+void GLView::setViewport()
 {
-  glViewport(x, y, width, height);
+//  glViewport(x, y, width, height);
+  if (_windowHeight > _windowWidth) {
+      float adjustedHeight = (WINDOW_HEIGHT / WINDOW_WIDTH) * _windowWidth;
+      glViewport(0, (_windowHeight - adjustedHeight) / 2, _windowWidth, adjustedHeight);
+  }
+  else {
+      float adjustedWidth = (WINDOW_WIDTH / WINDOW_HEIGHT) * _windowHeight;
+      glViewport((_windowWidth - adjustedWidth) / 2, 0, adjustedWidth, _windowHeight);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
