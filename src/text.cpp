@@ -35,7 +35,7 @@ void Text::initBuffers()
     {
         std::ostringstream ss;
         ss << "Could not load font '" << fontFile << "'" << std::endl;
-        throw new std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     font->ShaderLocations(_aPosition, _aNormal, _uPen);

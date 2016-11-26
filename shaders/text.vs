@@ -15,5 +15,5 @@ out vec4 c;
 void main()
 {
   gl_Position = transform * scale * (vec4(position, 1.0f) + vec4(pen, 1.0));
-  c = vec4(color, alpha);
+  c = vec4(color + normal * 0.1, alpha);
 }
