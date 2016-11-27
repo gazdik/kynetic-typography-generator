@@ -139,13 +139,94 @@ glm::vec3 Node::getRotation()
 void Node::update()
 {
     glm::mat4 modelViewMatrix;
-    modelViewMatrix = glm::translate(modelViewMatrix, glm::vec3(_position.x, _position.y, _position.z));
+
+    glm::vec3 position = _position;
+
+    glm::vec3 anchorPointInPoints = (_anchorPoint * _contentSize);
+
+    if (_ignoreAnchorForPositioning)
+    {
+        position.x += anchorPointInPoints.x;
+        position.y += anchorPointInPoints.y;
+    }
+
+    anchorPointInPoints *= _scale;
+
+    // Calc sin and cos for rotation matrix
+    float sinz, cosz;
+//    sinx = sinf(glm::radians(_rotation.x));
+//    cosx = cosf(glm::radians(_rotation.x));
+//    siny = sinf(glm::radians(_rotation.y));
+//    cosy = cosf(glm::radians(_rotation.y));
+    sinz = sinf(glm::radians(_rotation.z));
+    cosz = cosf(glm::radians(_rotation.z));
+
+    // x-axis
+//    position.y += cosx * -anchorPointInPoints.y - sinx * -anchorPointInPoints.z;
+//    position.z += sinx * -anchorPointInPoints.y + cosx * -anchorPointInPoints.z;
+    // y-axis
+//    position.x += cosy * -anchorPointInPoints.x + siny * -anchorPointInPoints.z;
+//    position.z += -siny * -anchorPointInPoints.x + cosy * -anchorPointInPoints.z;
+    // z-axis
+    position.x += cosz * -anchorPointInPoints.x + -sinz * -anchorPointInPoints.y;
+    position.y += sinz * -anchorPointInPoints.x +  cosz * -anchorPointInPoints.y;
+
+    // Translate
+    modelViewMatrix = glm::translate(modelViewMatrix, glm::vec3(position.x, position.y, position.z));
+
+    // Rotate around z-axis
+    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+    // Move to anchor point
+    if (!_ignoreAnchorForPositioning)
+        modelViewMatrix = glm::translate(modelViewMatrix, anchorPointInPoints);
+
+    // Rotate around x and y axes
+    // TODO Do it without moving
     modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
     modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-    modelViewMatrix = glm::scale(modelViewMatrix, glm::vec3(_scale.x, _scale.y, _scale.z));
+
+    // Move back
+    if (!_ignoreAnchorForPositioning)
+        modelViewMatrix = glm::translate(modelViewMatrix, -anchorPointInPoints);
+
+    // Scale
+    modelViewMatrix = glm::scale(modelViewMatrix, _scale);
 
     _modelViewMatrix = modelViewMatrix;
+}
+
+void Node::setContentSize(float x, float y, float z)
+{
+    _contentSize.x = x;
+    _contentSize.y = y;
+    _contentSize.z = z;
+}
+
+void Node::setContentSize(const glm::vec3& contentSize)
+{
+    _contentSize = contentSize;
+}
+
+glm::vec3 Node::getContentSize()
+{
+    return _contentSize;
+}
+
+void Node::setAnchorPoint(const glm::vec3& anchorPoint)
+{
+}
+
+void Node::setAnchorPoint(float x, float y, float z)
+{
+    _anchorPoint.x = x;
+    _anchorPoint.y = y;
+    _anchorPoint.z = z;
+}
+
+glm::vec3 Node::getAnchorPoint()
+{
+    return _anchorPoint;
 }
 
 bool Node::isVisible()
@@ -157,12 +238,6 @@ Node::~Node()
 {
 }
 
-void Node::setContentSize(float width, float height)
-{
-    _width = width;
-    _height = height;
-}
-
 void Node::runAction(Action* action)
 {
     ActionManager::getInstance()->addAction(action, this);
@@ -171,6 +246,8 @@ void Node::runAction(Action* action)
 void Node::setAlpha(float alpha)
 {
     _alpha = alpha;
+    for (auto child: _children)
+        child->setAlpha(alpha);
 }
 
 float Node::getAlpha()
