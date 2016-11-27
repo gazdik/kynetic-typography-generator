@@ -277,3 +277,7 @@ void Node::setScale(const glm::vec3& scale)
     _scale = scale;
 }
 
+void Node::ignoreAnchorPointForPositioning(bool ignore)
+{
+    _ignoreAnchorForPositioning = ignore;
+}

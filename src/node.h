@@ -51,6 +51,7 @@ public:
     void setZRotation(float rotation);
     void setRotation(const glm::vec3 & rotation);
     void setVisible(bool visible);
+    void ignoreAnchorPointForPositioning(bool ignore);
     void setAlpha(float alpha);
     void setContentSize(float x, float y, float z = 0.0f);
     void setContentSize(const glm::vec3 & contentSize);
