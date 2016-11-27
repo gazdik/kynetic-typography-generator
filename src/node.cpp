@@ -146,49 +146,44 @@ void Node::update()
 
     if (_ignoreAnchorForPositioning)
     {
-        position.x += anchorPointInPoints.x;
-        position.y += anchorPointInPoints.y;
+        position += anchorPointInPoints;
     }
 
     anchorPointInPoints *= _scale;
 
     // Calc sin and cos for rotation matrix
-    float sinz, cosz;
-//    sinx = sinf(glm::radians(_rotation.x));
-//    cosx = cosf(glm::radians(_rotation.x));
-//    siny = sinf(glm::radians(_rotation.y));
-//    cosy = cosf(glm::radians(_rotation.y));
+    float sinx, cosx, siny, cosy, sinz, cosz;
+    sinx = sinf(glm::radians(_rotation.x));
+    cosx = cosf(glm::radians(_rotation.x));
+    siny = sinf(glm::radians(_rotation.y));
+    cosy = cosf(glm::radians(_rotation.y));
     sinz = sinf(glm::radians(_rotation.z));
     cosz = cosf(glm::radians(_rotation.z));
 
-    // x-axis
-//    position.y += cosx * -anchorPointInPoints.y - sinx * -anchorPointInPoints.z;
-//    position.z += sinx * -anchorPointInPoints.y + cosx * -anchorPointInPoints.z;
-    // y-axis
-//    position.x += cosy * -anchorPointInPoints.x + siny * -anchorPointInPoints.z;
-//    position.z += -siny * -anchorPointInPoints.x + cosy * -anchorPointInPoints.z;
+    // all axes at once
+    position.x +=   cosy * cosz * -anchorPointInPoints.x
+                  + cosy * -sinz * -anchorPointInPoints.y
+                  + siny * -anchorPointInPoints.z;
+    position.y +=   (-sinx * -siny * cosz + cosx * sinz) * -anchorPointInPoints.x
+                  + (-sinx * -siny * -sinz + cosx * cosz) * -anchorPointInPoints.y
+                  + -sinx * cosy * -anchorPointInPoints.z;
+    position.z +=   (cosx * -siny * cosz + sinx * sinz) * -anchorPointInPoints.x
+                  + (cosx * -siny * -sinz + sinx * cosz) * -anchorPointInPoints.y
+                  + cosx * cosy * -anchorPointInPoints.z;
     // z-axis
-    position.x += cosz * -anchorPointInPoints.x + -sinz * -anchorPointInPoints.y;
-    position.y += sinz * -anchorPointInPoints.x +  cosz * -anchorPointInPoints.y;
+//    position.x += cosz * -anchorPointInPoints.x + -sinz * -anchorPointInPoints.y;
+//    position.y += sinz * -anchorPointInPoints.x +  cosz * -anchorPointInPoints.y;
 
     // Translate
     modelViewMatrix = glm::translate(modelViewMatrix, glm::vec3(position.x, position.y, position.z));
 
+    // Rotate around x-axis
+    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    // Rotate around y-axis
+    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
     // Rotate around z-axis
     modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-    // Move to anchor point
-    if (!_ignoreAnchorForPositioning)
-        modelViewMatrix = glm::translate(modelViewMatrix, anchorPointInPoints);
-
-    // Rotate around x and y axes
-    // TODO Do it without moving
-    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-
-    // Move back
-    if (!_ignoreAnchorForPositioning)
-        modelViewMatrix = glm::translate(modelViewMatrix, -anchorPointInPoints);
 
     // Scale
     modelViewMatrix = glm::scale(modelViewMatrix, _scale);
