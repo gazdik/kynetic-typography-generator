@@ -169,14 +169,14 @@ void GLView::onError(int error, const char* description)
 
 void GLView::setViewport()
 {
-//  glViewport(x, y, width, height);
-  if (_windowHeight > _windowWidth) {
-      float adjustedHeight = (WINDOW_HEIGHT / WINDOW_WIDTH) * _windowWidth;
-      glViewport(0, (_windowHeight - adjustedHeight) / 2, _windowWidth, adjustedHeight);
+  float ratio = _windowWidth / (float) _windowHeight;
+  if (ratio > FULLHD_RATIO) {
+      int adjustedWidth = (WINDOW_WIDTH / WINDOW_HEIGHT) * _windowHeight;
+      glViewport((_windowWidth - adjustedWidth) / 2, 0, adjustedWidth, _windowHeight);
   }
   else {
-      float adjustedWidth = (WINDOW_WIDTH / WINDOW_HEIGHT) * _windowHeight;
-      glViewport((_windowWidth - adjustedWidth) / 2, 0, adjustedWidth, _windowHeight);
+      int adjustedHeight = (WINDOW_HEIGHT / WINDOW_WIDTH) * (float) _windowWidth;
+      glViewport(0, (_windowHeight - adjustedHeight) / 2, _windowWidth, adjustedHeight);
   }
 }
 
@@ -212,8 +212,6 @@ void GLViewInputHandler::onKeyPress(GLFWwindow* window, int key, int scancode,
 void GLViewInputHandler::onWindowResize(GLFWwindow* window, int width,
     int height)
 {
-  if (_view)
-    _view->onWindowResize(window, width, height);
 }
 
 void GLViewInputHandler::onFramebufferResize(GLFWwindow* window, int width,
