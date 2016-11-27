@@ -77,7 +77,8 @@ Square::~Square()
 {
 }
 
-Square::Square(float width, float height)
+Square::Square(float width, float height) :
+        Square()
 {
     _contentSize.x = width;
     _contentSize.y = height;
@@ -121,7 +122,8 @@ Triangle::~Triangle()
 {
 }
 
-Triangle::Triangle(float width, float height)
+Triangle::Triangle(float width, float height) :
+        Triangle()
 {
     _contentSize.x = width;
     _contentSize.y = height;
@@ -189,7 +191,8 @@ Cube::~Cube()
 {
 }
 
-Cube::Cube(float width, float height, float depth)
+Cube::Cube(float width, float height, float depth) :
+        Cube()
 {
     _contentSize.x = width;
     _contentSize.y = height;
