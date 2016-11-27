@@ -9,6 +9,7 @@
 
 Group::Group()
 {
+    _ignoreAnchorForPositioning = true;
 }
 
 Group::~Group()
