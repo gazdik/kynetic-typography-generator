@@ -14,7 +14,6 @@
 #include <GLProgram.h>
 #include <GLView.h>
 #include "group.h"
-#include "triangle.h"
 #include "actionmanager.h"
 #include "action.h"
 

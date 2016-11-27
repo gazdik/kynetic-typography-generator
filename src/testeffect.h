@@ -2,7 +2,7 @@
 #define TESTEFFECT_H
 
 #include "effect.h"
-#include "triangle.h"
+#include "geometricshape.h"
 #include "text.h"
 #include "action.h"
 #include "macros.h"

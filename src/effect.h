@@ -4,7 +4,6 @@
 #include <string>
 #include "inputstring.h"
 #include "node.h"
-#include "triangle.h"
 
 class Effect
 {

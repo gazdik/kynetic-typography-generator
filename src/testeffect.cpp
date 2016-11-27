@@ -1,5 +1,6 @@
 #include "testeffect.h"
 
+#include "geometricshape.h"
 
 void TestEffect::run(std::string str, Node &inputNode)
 {
