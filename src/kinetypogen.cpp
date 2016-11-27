@@ -33,7 +33,7 @@ KineTypoGen::KineTypoGen(int& argc, char* argv[])
 
     glView = new GLView("KineTypoGen", 800, 600);
 
-    mainNode = new Group();
+    mainNode = new Group(WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f);
 
     // Do the magic here
 
