@@ -153,12 +153,12 @@ void Node::update()
 
     // Calc sin and cos for rotation matrix
     float sinx, cosx, siny, cosy, sinz, cosz;
-    sinx = sinf(glm::radians(_rotation.x));
-    cosx = cosf(glm::radians(_rotation.x));
-    siny = sinf(glm::radians(_rotation.y));
-    cosy = cosf(glm::radians(_rotation.y));
-    sinz = sinf(glm::radians(_rotation.z));
-    cosz = cosf(glm::radians(_rotation.z));
+    sinx = sinf(-glm::radians(_rotation.x));
+    cosx = cosf(-glm::radians(_rotation.x));
+    siny = sinf(-glm::radians(_rotation.y));
+    cosy = cosf(-glm::radians(_rotation.y));
+    sinz = sinf(-glm::radians(_rotation.z));
+    cosz = cosf(-glm::radians(_rotation.z));
 
     // all axes at once
     position.x +=   cosy * cosz * -anchorPointInPoints.x
@@ -178,12 +178,11 @@ void Node::update()
     modelViewMatrix = glm::translate(modelViewMatrix, glm::vec3(position.x, position.y, position.z));
 
     // Rotate around x-axis
-    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelViewMatrix = glm::rotate(modelViewMatrix, -glm::radians(_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
     // Rotate around y-axis
-    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    modelViewMatrix = glm::rotate(modelViewMatrix, -glm::radians(_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
     // Rotate around z-axis
-    modelViewMatrix = glm::rotate(modelViewMatrix, glm::radians(_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-
+    modelViewMatrix = glm::rotate(modelViewMatrix, -glm::radians(_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
     // Scale
     modelViewMatrix = glm::scale(modelViewMatrix, _scale);
