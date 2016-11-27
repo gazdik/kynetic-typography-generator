@@ -43,6 +43,7 @@ class Square: public GeometricShape
 {
 public:
     Square();
+    Square(float width, float height);
     virtual ~Square();
 
 private:
@@ -53,6 +54,7 @@ class Triangle: public GeometricShape
 {
 public:
     Triangle();
+    Triangle(float width, float height);
     virtual ~Triangle();
 
 private:
@@ -63,6 +65,7 @@ class Cube: public GeometricShape
 {
 public:
     Cube();
+    Cube(float width, float height, float depth);
     virtual ~Cube();
 
 private:

@@ -14,6 +14,7 @@ class Group: public Node
 {
 public:
     Group();
+    Group(float width, float height, float depth = 0.0f);
     virtual ~Group();
 
 protected:

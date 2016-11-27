@@ -77,6 +77,12 @@ Square::~Square()
 {
 }
 
+Square::Square(float width, float height)
+{
+    _contentSize.x = width;
+    _contentSize.y = height;
+}
+
 void Square::bufferData()
 {
     glBindVertexArray(_VAO);
@@ -113,6 +119,12 @@ Triangle::Triangle()
 
 Triangle::~Triangle()
 {
+}
+
+Triangle::Triangle(float width, float height)
+{
+    _contentSize.x = width;
+    _contentSize.y = height;
 }
 
 void Triangle::bufferData()
@@ -175,6 +187,13 @@ Cube::Cube()
 
 Cube::~Cube()
 {
+}
+
+Cube::Cube(float width, float height, float depth)
+{
+    _contentSize.x = width;
+    _contentSize.y = height;
+    _contentSize.z = depth;
 }
 
 void Cube::bufferData()
