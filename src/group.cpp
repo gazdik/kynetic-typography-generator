@@ -16,7 +16,6 @@ Group::~Group()
 {
 }
 
-void Group::initBuffers()
 {
 }
 

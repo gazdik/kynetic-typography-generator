@@ -17,8 +17,6 @@ public:
     virtual ~Group();
 
 protected:
-
-    virtual void initBuffers();
     virtual void draw(const glm::mat4 & transform);
 };
 
