@@ -13,12 +13,13 @@ SOURCES += kinetypogen.cpp \
     actionmanager.cpp \
     inputstring.cpp \
     node.cpp \
-    triangle.cpp \
     sequencerunner.cpp \
     testeffect.cpp \
     GLProgram.cpp \
     GLView.cpp \
-    text.cpp
+    text.cpp \
+    group.cpp \
+    geometricshape.cpp
 
 HEADERS += kinetypogen.h \
     inputstring.h \
@@ -26,10 +27,12 @@ HEADERS += kinetypogen.h \
     actionmanager.h \
     effect.h \
     node.h \
-    triangle.h \
     sequencerunner.h \
     testeffect.h \
     macros.h \
     GLProgram.h \
     GLView.h \
-    text.h
+    text.h \
+    group.h \
+    geometricshape.h \
+    constants.h
