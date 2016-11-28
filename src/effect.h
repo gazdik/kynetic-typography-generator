@@ -4,13 +4,15 @@
 #include <string>
 #include "inputstring.h"
 #include "node.h"
+#include "action.h"
+#include "text.h"
 
 class Effect
 {
 public:
     virtual ~Effect() {}
-    virtual void run(std::string str, Node& inputNode) = 0;
-    virtual bool acceptsString(InputString& inputString) = 0;
+    virtual float run(InputString& inputString, Node& inputNode, float startTime) = 0;
+    virtual bool acceptsString(InputString const &inputString) = 0;
 };
 
 #endif // EFFECT_H

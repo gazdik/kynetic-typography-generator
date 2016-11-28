@@ -39,7 +39,7 @@ public:
      * Run action on this node
      * @param action
      */
-    void runAction(Action *action);
+    void runAction(float delay, Action *action);
 
     void setPosition(float x, float y, float z = 0.0f);
     void setPosition(const glm::vec3 &position);

@@ -17,7 +17,7 @@ std::string InputString::trim(const std::string &s)
    return (wsback<=wsfront ? std::string() : std::string(wsfront,wsback));
 }
 
-bool InputString::startsWith(int count, StringObjectType type, StringObjectModifier modifiers)
+bool InputString::startsWith(int count, StringObjectType type, StringObjectModifier modifiers) const
 {
     std::string remaining = str;
     std::smatch match;
@@ -126,7 +126,19 @@ std::string InputString::read(int count, StringObjectType type, bool pop, std::s
     return final;
 }
 
-#include <iostream>
+std::string InputString::readAll(bool pop)
+{
+    std::string s = str;
+    if (pop) {
+        str = "";
+    }
+    return s;
+}
+
+bool InputString::isEmpty()
+{
+    return str.empty();
+}
 
 void InputString::test() {
     InputString str("  *Ahoj*, tohle je *moje* první věta. Tak uvidíme, co z *ní* vzejde!! \n pecka... ");

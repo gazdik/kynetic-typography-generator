@@ -232,9 +232,16 @@ Node::~Node()
 {
 }
 
-void Node::runAction(Action* action)
+void Node::runAction(float delay, Action* action)
 {
-    ActionManager::getInstance()->addAction(action, this);
+    ActionManager::getInstance()->addAction(
+        new Sequence(
+            new Delay(delay),
+            action,
+            nullptr
+        ),
+        this
+    );
 }
 
 void Node::setAlpha(float alpha)

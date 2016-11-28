@@ -24,8 +24,13 @@ class InputString
 {
 public:
     InputString(std::string str);
-    bool startsWith(int count, StringObjectType type, StringObjectModifier modifiers = (StringObjectModifier)0);
-    std::string read(int count, StringObjectType type, bool pop);
+
+    bool startsWith(int count, StringObjectType type, StringObjectModifier modifiers = (StringObjectModifier)0) const;
+
+    std::string read(int count, StringObjectType type, bool pop = true);
+    std::string readAll(bool pop = true);
+
+    bool isEmpty();
 
     static std::string trim(const std::string &s);
 

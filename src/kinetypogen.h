@@ -29,7 +29,9 @@
 #include "effect.h"
 
 // Effects
-#include "testeffect.h"
+#include "effects/testeffect.h"
+#include "effects/letteraside.h"
+#include "effects/oneword.h"
 
 class KineTypoGen
 {

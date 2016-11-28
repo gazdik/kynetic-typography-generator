@@ -7,6 +7,10 @@
 #include <stdexcept>
 
 #include "effect.h"
+#include "group.h"
+#include "inputstring.h"
+#include "action.h"
+
 
 class SequenceRunner
 {

@@ -14,12 +14,14 @@ SOURCES += kinetypogen.cpp \
     inputstring.cpp \
     node.cpp \
     sequencerunner.cpp \
-    testeffect.cpp \
     GLProgram.cpp \
     GLView.cpp \
     text.cpp \
     group.cpp \
-    geometricshape.cpp
+    geometricshape.cpp \
+    effects/letteraside.cpp \
+    effects/testeffect.cpp \
+    effects/oneword.cpp
 
 HEADERS += kinetypogen.h \
     inputstring.h \
@@ -28,11 +30,13 @@ HEADERS += kinetypogen.h \
     effect.h \
     node.h \
     sequencerunner.h \
-    testeffect.h \
     macros.h \
     GLProgram.h \
     GLView.h \
     text.h \
     group.h \
     geometricshape.h \
-    constants.h
+    constants.h \
+    effects/letteraside.h \
+    effects/testeffect.h \
+    effects/oneword.h

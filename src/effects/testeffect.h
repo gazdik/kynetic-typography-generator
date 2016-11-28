@@ -11,8 +11,8 @@ class TestEffect : public Effect
 {
 public:
     ~TestEffect() {}
-    void run(std::string str, Node &inputNode) override;
-    bool acceptsString(InputString &inputString) override;
+    float run(InputString &str, Node &inputNode, float startTime) override;
+    bool acceptsString(InputString const &inputString) override;
 private:
     Triangle *triangle1, *triangle2;
 };

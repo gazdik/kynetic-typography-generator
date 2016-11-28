@@ -13,9 +13,25 @@ SequenceRunner::SequenceRunner(std::vector<Effect*> &effects)
 
 void SequenceRunner::run(std::string str, int seed, Node &mainNode)
 {
-    // TODO: Implement text reading loop
     srand(seed);
 
-    int effectIndex = rand() % _effects.size();
-    _effects[effectIndex]->run(str, mainNode);
+    InputString inputString(str);
+    float elapsedTime = 0;
+
+    while (!inputString.isEmpty()) {
+        // Populate effects that are interested
+        std::vector<Effect*> possibleEffects;
+        for (int i = 0; i < _effects.size(); ++i) {
+            if (_effects[i]->acceptsString(inputString)) {
+                possibleEffects.push_back(_effects[i]);
+            }
+        }
+
+        // Choose one of them
+        Group *effectGroup = new Group();
+        effectGroup->setPosition(-1920, 0);
+        mainNode.addChild(effectGroup);
+        int effectIndex = rand() % possibleEffects.size();
+        elapsedTime += possibleEffects[effectIndex]->run(inputString, *effectGroup, elapsedTime);
+    }
 }

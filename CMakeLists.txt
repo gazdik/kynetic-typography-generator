@@ -6,7 +6,7 @@ set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_BUILD_TYPE Debug)
 
 include_directories(src)
-file(GLOB PROJECT_SRC src/*.cpp)
+file(GLOB PROJECT_SRC src/*.cpp src/effects/*.cpp)
 add_executable(pgr-project ${PROJECT_SRC})
 
 find_package(OpenGL REQUIRED)
