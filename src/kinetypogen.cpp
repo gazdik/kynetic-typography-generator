@@ -46,7 +46,7 @@ KineTypoGen::KineTypoGen(int& argc, char* argv[])
 int KineTypoGen::run()
 {
     std::vector<Effect*> effects;
-    effects.push_back(new TestEffect());
+    //effects.push_back(new TestEffect());
     effects.push_back(new LetterAside());
     effects.push_back(new OneWord());
     // effects declarations go here
