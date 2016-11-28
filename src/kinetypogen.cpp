@@ -75,7 +75,7 @@ void KineTypoGen::renderScene()
 
     ActionManager::getInstance()->update(now);
 
-    glm::mat4 projection = glm::ortho(0.0f, WINDOW_WIDTH, 0.0f, WINDOW_HEIGHT, -10.0f, 100.0f);
+    glm::mat4 projection = glm::ortho(0.0f, WINDOW_WIDTH, 0.0f, WINDOW_HEIGHT, -1000.0f, 1000.0f);
 
     mainNode->render(projection);
 
