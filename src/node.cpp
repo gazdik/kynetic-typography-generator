@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
+using namespace std;
+
 Node::Node()
 {
     setAlpha(1.0);
@@ -26,7 +28,8 @@ void Node::render(const glm::mat4& parentTransform)
 
 void Node::addChild(Node* child)
 {
-    _children.push_back(child);
+    child->setParent(this);
+    _children.insert(child);
     setAlpha(_alpha);
 }
 
@@ -230,6 +233,10 @@ bool Node::isVisible()
 
 Node::~Node()
 {
+    removeReferenceFromParent();
+
+    for (auto child: _children)
+        delete child;
 }
 
 void Node::runAction(float delay, Action* action)
@@ -286,4 +293,23 @@ void Node::setScale(const glm::vec3& scale)
 void Node::ignoreAnchorPointForPositioning(bool ignore)
 {
     _ignoreAnchorForPositioning = ignore;
+}
+
+void Node::removeReferenceFromParent()
+{
+    if (_parent)
+        _parent->removeChildReference(this);
+}
+
+void Node::setParent(Node* parent)
+{
+    _parent = parent;
+}
+
+void Node::removeChildReference(Node* node)
+{
+    auto it = _children.find(node);
+    if (it != _children.end()) {
+        _children.erase(it);
+    }
 }

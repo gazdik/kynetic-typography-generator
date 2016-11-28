@@ -12,6 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
+#include <set>
 
 class Action;
 
@@ -34,6 +35,22 @@ public:
      * @param child
      */
     void addChild(Node *child);
+
+    /**
+     * Remove a reference to current node from it's parent
+     */
+    void removeReferenceFromParent();
+
+    /**
+     * Set the node's parent
+     */
+    void setParent(Node *parent);
+
+    /**
+     * Remove a reference to the child node
+     * @param node
+     */
+    void removeChildReference(Node *node);
 
     /**
      * Run action on this node
@@ -99,7 +116,8 @@ protected:
 
     glm::mat4 _modelViewMatrix;   ///< ModelView transformation matrix
 
-    std::vector<Node *> _children;  ///< Children nodes
+    std::set<Node *> _children;  ///< Children nodes
+    Node *_parent = nullptr;
 };
 
 #endif // NODE_H

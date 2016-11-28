@@ -267,5 +267,15 @@ private:
     float _startAlpha = 1.0f;
 };
 
+class RemoveNode: public Action
+{
+public:
+    RemoveNode();
+    virtual ~RemoveNode();
+
+    virtual void update(float interval) override;
+    virtual void init() override;
+};
+
 
 #endif /* SRC_ACTION_H_ */

@@ -514,3 +514,22 @@ void Ease::setNode(Node* node)
     _node = node;
     _action->setNode(node);
 }
+
+RemoveNode::RemoveNode() :
+        Action(0.0f)
+{
+}
+
+RemoveNode::~RemoveNode()
+{
+    delete _node;
+}
+
+void RemoveNode::update(float interval)
+{
+    _running = false;
+}
+
+void RemoveNode::init()
+{
+}

@@ -119,6 +119,16 @@ float TestEffect::run(InputString &str, Node &inputNode, float startTime)
         new MoveTo(1, glm::vec3(0, -1080, 0))
     );
 
+    auto tempNode = new Cube(100, 130, 200);
+    tempNode->setPosition(800, 200, 0.0);
+    tempNode->runAction(startTime,
+            new Sequence(
+                    new RotateBy(2.0f, 350.0f, RotateBy::Axis::X),
+                    new RemoveNode(),
+                    nullptr)
+    );
+    inputNode.addChild(tempNode);
+
     return 4;
 }
 
