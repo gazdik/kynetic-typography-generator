@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <deque>
+#include <functional>
 
 class Action
 {
@@ -275,6 +276,34 @@ public:
 
     virtual void update(float interval) override;
     virtual void init() override;
+};
+
+class CallFunction : public Action
+{
+public:
+    /**
+     * Call the function after given time
+     * @param delay
+     * @param callback
+     */
+    CallFunction(float time, const std::function<void()> &callback);
+    /**
+     * Call the function in next frame
+     * @param callback
+     */
+    CallFunction(const std::function<void()> &callback);
+    virtual ~CallFunction();
+
+    virtual void update(float interval) override;
+    virtual void init() override;
+
+    /**
+     * Run action independently from a node
+     */
+    void run();
+
+private:
+    std::function<void()> _callback;
 };
 
 

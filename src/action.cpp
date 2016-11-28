@@ -7,6 +7,8 @@
 
 #include "action.h"
 
+#include "actionmanager.h"
+
 #include "macros.h"
 #include <algorithm>
 #include <cfloat>
@@ -95,7 +97,7 @@ bool Action::isRunning()
 
 void Action::setDuration(float duration)
 {
-    _duration = duration <= 0 ? FLT_EPSILON : duration;
+    _duration = duration <= 0.0f ? FLT_EPSILON : duration;
 }
 
 float Action::getDuration()
@@ -532,4 +534,33 @@ void RemoveNode::update(float interval)
 
 void RemoveNode::init()
 {
+}
+
+CallFunction::CallFunction(float time, const std::function<void()>& callback) :
+        Action(time), _callback { callback }
+{
+}
+
+CallFunction::CallFunction(const std::function<void()>& callback) :
+        Action(0.0f), _callback { callback }
+{
+}
+
+CallFunction::~CallFunction()
+{
+}
+
+void CallFunction::update(float interval)
+{
+    if (interval == 1.0f)
+        _callback();
+}
+
+void CallFunction::init()
+{
+}
+
+void CallFunction::run()
+{
+    ActionManager::getInstance()->addAction(this);
 }

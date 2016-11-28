@@ -1,6 +1,13 @@
 #include "testeffect.h"
 
 #include "geometricshape.h"
+#include <functional>
+using namespace std;
+
+void foo()
+{
+    LOG("Function foo()");
+}
 
 
 float TestEffect::run(InputString &str, Node &inputNode, float startTime)
@@ -119,6 +126,9 @@ float TestEffect::run(InputString &str, Node &inputNode, float startTime)
         new MoveTo(1, glm::vec3(0, -1080, 0))
     );
 
+    /*
+     * Remove node
+     */
     auto tempNode = new Cube(100, 130, 200);
     tempNode->setPosition(800, 200, 0.0);
     tempNode->runAction(startTime,
@@ -127,7 +137,39 @@ float TestEffect::run(InputString &str, Node &inputNode, float startTime)
                     new RemoveNode(),
                     nullptr)
     );
+
     inputNode.addChild(tempNode);
+
+    /*
+     * Callback functions
+     */
+
+    // global function
+    auto fooFunc = std::bind(foo);
+    auto barFunc = std::bind(&TestEffect::bar, this);
+    auto foobarFunc = std::bind(&TestEffect::foobar, this, "callback3");
+
+    auto callback1 = new CallFunction(startTime, fooFunc);
+    callback1->run();
+    auto callback2 = new CallFunction(startTime + 1.0f, barFunc);
+    callback2->run();
+    // Call Function from sequence
+    auto fooSquare = new Square(100.0f, 100.0f);
+    fooSquare->runAction(startTime, new Sequence(
+            new FadeIn(3.0f),
+            new CallFunction(foobarFunc),
+            new RemoveNode(),
+            nullptr
+    ));
+    // Call lambda function (I prefer this way)
+    std::string localString ("String in local variable passed to the lambda function by value");
+    auto callback4 = new CallFunction(startTime + 4.0f, [=]{
+       foo();
+       bar();
+       foobar("callback4");
+       LOG("%s", localString.c_str());
+    });
+    callback4->run();
 
     return 4;
 }
@@ -136,4 +178,14 @@ bool TestEffect::acceptsString(InputString const &inputString)
 {
     UNUSED(inputString);
     return true;
+}
+
+void TestEffect::bar()
+{
+    LOG("Method TestEffect::bar()");
+}
+
+void TestEffect::foobar(const char* msg)
+{
+    LOG("Method TestEffect::foobar(msg) with msg=%s", msg);
 }

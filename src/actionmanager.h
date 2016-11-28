@@ -27,6 +27,12 @@ public:
     void addAction(Action *action, Node *node);
 
     /**
+     * Add the action that will be performed
+     * @param action
+     */
+    void addAction(Action *action);
+
+    /**
      * Remove the action
      * @param action
      */

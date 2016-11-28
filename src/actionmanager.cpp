@@ -29,6 +29,12 @@ void ActionManager::addAction(Action* action, Node* node)
     _actions.insert(action);
 }
 
+void ActionManager::addAction(Action* action)
+{
+    action->setNode(nullptr);
+    _actions.insert(action);
+}
+
 void ActionManager::removeAction(Action* action)
 {
     if (_actions.count(action) > 0)
@@ -57,6 +63,7 @@ void ActionManager::update(float time)
             removeAction(it);
     }
 }
+
 
 void ActionManager::removeAction(
         std::set<Action*>::iterator& it)

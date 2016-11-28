@@ -13,6 +13,9 @@ public:
     ~TestEffect() {}
     float run(InputString &str, Node &inputNode, float startTime) override;
     bool acceptsString(InputString const &inputString) override;
+
+    void bar();
+    void foobar(const char *msg);
 private:
     Triangle *triangle1, *triangle2;
 };
