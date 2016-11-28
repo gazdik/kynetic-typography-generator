@@ -29,7 +29,7 @@ float TestEffect::run(InputString &str, Node &inputNode, float startTime)
     ));
     triangle1->runAction(startTime, new RotateTo(2.0f, 360.0f, 360.0f, 360.0f));
 
-    auto text = new Text(str.read(1, SOT_WORD));
+    auto text = new Text(str.read(1, SOT_WORD), "DejaVuSerif-Bold");
     text->setPosition(20, 300);
     text->runAction(startTime,
         new EaseOut(

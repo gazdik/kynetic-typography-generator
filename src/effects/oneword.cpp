@@ -27,7 +27,7 @@ float OneWord::run(InputString &inputString, Node &inputNode, float startTime)
     std::string w = inputString.read(1, SOT_WORD);
 
     for (int i = 0; i < w.size(); ++i) {
-        auto sw = new Text(w.substr(i, 1));
+        auto sw = new Text(w.substr(i, 1), "Roboto-Thin");
         sw->setAlpha(0);
         sw->setPosition(owLeft + i * 120, bottom);
         sw->setScale(2);

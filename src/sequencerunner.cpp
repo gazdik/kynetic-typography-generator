@@ -21,7 +21,7 @@ void SequenceRunner::run(std::string str, int seed, Node &mainNode)
     while (!inputString.isEmpty()) {
         // Populate effects that are interested
         std::vector<Effect*> possibleEffects;
-        for (int i = 0; i < _effects.size(); ++i) {
+        for (uint i = 0; i < _effects.size(); ++i) {
             if (_effects[i]->acceptsString(inputString)) {
                 possibleEffects.push_back(_effects[i]);
             }

@@ -2,9 +2,10 @@
 
 #include <stdexcept>
 
-Text::Text(std::string str)
+Text::Text(std::string str, std::string fontName)
 {
     _string = str;
+    font = FontCache::getInstance()->font(fontName);
 
     _program = new GLProgram;
     _program->initWithSourceFiles(
@@ -27,24 +28,6 @@ void Text::initBuffers()
 
     _aPosition = _program->getAttribLocation("position");
     _aNormal = _program->getAttribLocation("normal");
-
-    char fontFile[] = "fonts/DejaVuSerif-Bold.ttf";
-    font = new FTExtrudeFont(fontFile);
-
-    if(font->Error())
-    {
-        std::ostringstream ss;
-        ss << "Could not load font '" << fontFile << "'" << std::endl;
-        throw std::runtime_error(ss.str());
-    }
-
-    font->ShaderLocations(_aPosition, _aNormal, _uPen);
-    font->FaceSize(70);
-    font->Depth(3);
-    font->CharMap(ft_encoding_unicode);
-
-    simpleLayout.SetFont(font);
-    simpleLayout.SetLineLength(600.0f);
 }
 
 void Text::draw(const glm::mat4 &transform)
@@ -56,6 +39,11 @@ void Text::draw(const glm::mat4 &transform)
     _program->setUniform3f(_uColor, _color.x, _color.y, _color.z);
     _program->setUniform1f(_uAlpha, _alpha);
 
+    font->ShaderLocations(_aPosition, _aNormal, _uPen);
+    //font->FaceSize(70);
+
+    simpleLayout.SetFont(font);
+    simpleLayout.SetLineLength(600.0f);
     simpleLayout.Render(_string.c_str(), -1, FTPoint(), FTGL::RENDER_FRONT);
 }
 

@@ -3,6 +3,7 @@
 
 #include "node.h"
 #include "GLProgram.h"
+#include "fontcache.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -20,7 +21,7 @@
 class Text : public Node
 {
 public:
-    Text(std::string str);
+    Text(std::string str, std::string fontName = "Roboto-Regular");
     virtual ~Text();
 
     virtual void update();
