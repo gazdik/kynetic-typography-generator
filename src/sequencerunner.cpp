@@ -29,7 +29,7 @@ void SequenceRunner::run(std::string str, int seed, Node &mainNode)
 
         // Choose one of them
         Group *effectGroup = new Group();
-        effectGroup->setPosition(-1920, 0);
+        effectGroup->setPosition(0, -1080);
         mainNode.addChild(effectGroup);
         int effectIndex = rand() % possibleEffects.size();
         elapsedTime += possibleEffects[effectIndex]->run(inputString, *effectGroup, elapsedTime);
