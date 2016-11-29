@@ -255,7 +255,7 @@ void Node::setAlpha(float alpha)
 {
     _alpha = alpha;
     for (auto child: _children)
-        child->setAlpha(alpha);
+        child->setAlpha(child->getAlpha() * alpha);
 }
 
 float Node::getAlpha()
