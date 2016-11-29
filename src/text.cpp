@@ -40,11 +40,58 @@ void Text::draw(const glm::mat4 &transform)
     _program->setUniform1f(_uAlpha, _alpha);
 
     font->ShaderLocations(_aPosition, _aNormal, _uPen);
-    //font->FaceSize(70);
+
 
     simpleLayout.SetFont(font);
-    simpleLayout.SetLineLength(600.0f);
+    simpleLayout.SetLineLength(_lineLength);
+    simpleLayout.SetAlignment((FTGL::TextAlignment)_alignment);
     simpleLayout.Render(_string.c_str(), -1, FTPoint(), FTGL::RENDER_FRONT);
+}
+
+Point Text::getDimensions()
+{
+    font->ShaderLocations(_aPosition, _aNormal, _uPen);
+    simpleLayout.SetFont(font);
+    simpleLayout.SetLineLength(_lineLength);
+    simpleLayout.SetAlignment((FTGL::TextAlignment)_alignment);
+
+    FTBBox box = simpleLayout.BBox(_string.c_str(), -1);
+
+    return Point((box.Upper().Xf() - box.Lower().Xf()) * _reqScale * _reqScale,
+                 (box.Upper().Yf() - box.Lower().Yf()) * _reqScale * _reqScale);
+}
+
+float Text::getLineLength() const
+{
+    return _lineLength * _reqScale * _reqScale;
+}
+
+void Text::setLineLength(float lineLength)
+{
+    // lineLength depends on current _scale
+    if (_reqScale != 0.0f) {
+        _lineLength = lineLength / (_reqScale * _reqScale);
+    }
+}
+
+void Text::setScale(float scale)
+{
+    // Update lineLength to match screen coordinates...
+    float ll = getLineLength();
+    _reqScale = scale;
+    setLineLength(ll);
+
+    Node::setScale(1.41f * scale);
+}
+
+TextAlignment Text::getAlignment() const
+{
+    return _alignment;
+}
+
+void Text::setAlignment(TextAlignment alignment)
+{
+    _alignment = alignment;
 }
 
 void Text::update()

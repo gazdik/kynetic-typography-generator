@@ -18,6 +18,20 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+typedef enum
+{
+    ALIGN_LEFT    = FTGL::ALIGN_LEFT,
+    ALIGN_CENTER  = FTGL::ALIGN_CENTER,
+    ALIGN_RIGHT   = FTGL::ALIGN_RIGHT,
+    ALIGN_JUSTIFY = FTGL::ALIGN_JUSTIFY
+} TextAlignment;
+
+struct Point {
+    float x;
+    float y;
+    Point(float x, float y): x(x), y(y) {}
+};
+
 class Text : public Node
 {
 public:
@@ -25,6 +39,17 @@ public:
     virtual ~Text();
 
     virtual void update();
+
+    Point getDimensions();
+
+    TextAlignment getAlignment() const;
+    void setAlignment(TextAlignment getAlignment);
+
+    float getLineLength() const;
+    void setLineLength(float getLineLength);
+
+    void setScale(float scale);
+
 protected:
 
     void initBuffers();
@@ -32,7 +57,14 @@ protected:
 
 private:
 
+    TextAlignment _alignment = ALIGN_LEFT;
+    float _lineLength = 1920.0f;
+
     std::string _string;
+
+    // Requested scale. The real scale stored in Node is modified to match
+    // FTGL text units.
+    float _reqScale = 1.0f;
 
     GLProgram *_program;
 

@@ -26,12 +26,14 @@ float OneWord::run(InputString &inputString, Node &inputNode, float startTime)
 
     std::string w = inputString.read(1, SOT_WORD);
 
+    float sumWidth = 0;
 
     for (int i = 0; i < w.size(); ++i) {
         auto sw = new Text(w.substr(i, 1), "Roboto-Thin");
+        sw->setScale(1.41);
         sw->setAlpha(0);
-        sw->setPosition(owLeft + i * 120, bottom);
-        sw->setScale(2);
+        sw->setPosition(owLeft + sumWidth, bottom);
+        sumWidth += sw->getDimensions().x + 50;
 
         // Fade in on start
         sw->runAction(startTime + i * 0.1f,
