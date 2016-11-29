@@ -77,9 +77,19 @@ void KineTypoGen::renderScene()
 
     ActionManager::getInstance()->update(now);
 
-    glm::mat4 projection = glm::ortho(0.0f, WINDOW_WIDTH, 0.0f, WINDOW_HEIGHT, -1000.0f, 1000.0f);
+    // TODO Calculate the exact value of Z position
+    glm::vec3 cameraPos {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 965.0f};
+    glm::vec3 cameraTarget {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 0.0f};
+    glm::vec3 cameraDirection { 0.0f, 1.0f, 0.0f };
 
-    mainNode->render(projection);
+    // For orthogonal projection comment marked lines
+    glm::mat4 projection;
+//    projection = glm::ortho(0.0f, WINDOW_WIDTH, 0.0f, WINDOW_HEIGHT, -1000.0f, 1000.0f);
+    projection = glm::perspectiveFov(45.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 10000.0f); // !
+    glm::mat4 view;
+    view = glm::lookAt(cameraPos, cameraTarget, cameraDirection); // !
+
+    mainNode->render(projection * view);
 
     glView->swapBuffers();
 
