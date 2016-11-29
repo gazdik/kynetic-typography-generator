@@ -22,7 +22,7 @@ SOURCES += kinetypogen.cpp \
     effects/letteraside.cpp \
     effects/testeffect.cpp \
     effects/oneword.cpp \
-    src/fontcache.cpp
+    fontcache.cpp
 
 HEADERS += kinetypogen.h \
     inputstring.h \
@@ -41,4 +41,4 @@ HEADERS += kinetypogen.h \
     effects/letteraside.h \
     effects/testeffect.h \
     effects/oneword.h \
-    src/fontcache.h
+    fontcache.h

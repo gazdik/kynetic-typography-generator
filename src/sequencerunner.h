@@ -18,6 +18,7 @@ public:
     SequenceRunner(std::vector<Effect*> &effects);
     void run(std::string str, int seed, Node &mainNode);
 private:
+    void planRandomEffect(float time, InputString &inputString, Node &mainNode);
     std::vector<Effect*> _effects;
 };
 
