@@ -32,6 +32,7 @@
 #include "effects/testeffect.h"
 #include "effects/letteraside.h"
 #include "effects/oneword.h"
+#include "effects/calibrationeffect.h"
 
 class KineTypoGen
 {

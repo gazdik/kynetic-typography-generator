@@ -47,6 +47,7 @@ int KineTypoGen::run()
 {
     std::vector<Effect*> effects;
     //effects.push_back(new TestEffect());
+//    effects.push_back(new CalibrationEffect());
     effects.push_back(new LetterAside());
     effects.push_back(new OneWord());
     // effects declarations go here
@@ -78,7 +79,7 @@ void KineTypoGen::renderScene()
     ActionManager::getInstance()->update(now);
 
     // TODO Calculate the exact value of Z position
-    glm::vec3 cameraPos {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 965.0f};
+    glm::vec3 cameraPos {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 960.0f};
     glm::vec3 cameraTarget {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 0.0f};
     glm::vec3 cameraDirection { 0.0f, 1.0f, 0.0f };
 
