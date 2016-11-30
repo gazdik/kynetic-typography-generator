@@ -25,7 +25,7 @@ float LetterAside::run(InputString &inputString, Node &inputNode, float startTim
     // Subtle zoom-in
     inputNode.setAnchorPoint(960, 525, 0);
     inputNode.runAction(startTime,
-                  new EaseIt(new ScaleBy(4, .06f)));
+                  new EaseIt(new MoveBy(4, glm::vec3(0, 0, 100))));
 
     auto sw = new Text(inputString.read(1, SOT_WORD));
     sw->setAlpha(0);
