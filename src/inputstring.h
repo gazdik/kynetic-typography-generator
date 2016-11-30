@@ -29,6 +29,7 @@ public:
 
     std::string read(int count, StringObjectType type, bool pop = true);
     std::string readAll(bool pop = true);
+    static std::string read(int count, StringObjectType type, bool pop, std::string &str);
 
     bool isEmpty();
 
@@ -36,7 +37,6 @@ public:
 
     static void test();
 private:
-    static std::string read(int count, StringObjectType type, bool pop, std::string &str);
 
     std::string str;
     static const std::regex sentenceRegex;
@@ -44,6 +44,7 @@ private:
     static const std::regex characterRegex;
     static const std::regex bigWordRegex;
     static const std::regex bigWordReplaceRegex;
+    static const std::regex collapseSpacesRegex;
 };
 
 #endif // INPUTSTRING_H

@@ -5,9 +5,11 @@ const std::regex InputString::wordRegex("^[^ ]+");
 const std::regex InputString::bigWordRegex("^[*]([^ *]+)[*]");
 const std::regex InputString::bigWordReplaceRegex("[*]([^ *]+)[*]");
 const std::regex InputString::characterRegex("^[^ ]");
+const std::regex InputString::collapseSpacesRegex("[[:space:]]+");
 
 InputString::InputString(std::string str) {
     this->str = trim(str);
+    this->str = std::regex_replace(this->str, collapseSpacesRegex, " ");
 }
 
 std::string InputString::trim(const std::string &s)
