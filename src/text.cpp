@@ -48,12 +48,23 @@ void Text::draw(const glm::mat4 &transform)
     simpleLayout.Render(_string.c_str(), -1, FTPoint(), FTGL::RENDER_FRONT);
 }
 
+float Text::getLineSpacing() const
+{
+    return _lineSpacing;
+}
+
+void Text::setLineSpacing(float lineSpacing)
+{
+    _lineSpacing = lineSpacing;
+}
+
 Point Text::getDimensions()
 {
     font->ShaderLocations(_aPosition, _aNormal, _uPen);
     simpleLayout.SetFont(font);
     simpleLayout.SetLineLength(_lineLength);
     simpleLayout.SetAlignment((FTGL::TextAlignment)_alignment);
+    simpleLayout.SetLineSpacing(_lineSpacing);
 
     FTBBox box = simpleLayout.BBox(_string.c_str(), -1);
 
@@ -72,6 +83,20 @@ void Text::setLineLength(float lineLength)
     if (_reqScale != 0.0f) {
         _lineLength = lineLength / (_reqScale * _reqScale);
     }
+}
+
+void Text::setScaleForWidth(float width)
+{
+    if (getLineLength() <= width) {
+        throw std::runtime_error("Line-length must be bigger than requested width.");
+    }
+
+    this->setScale(_reqScale * glm::sqrt(width / getDimensions().x));
+}
+
+void Text::setScaleForHeight(float height)
+{
+    this->setScale(_reqScale * glm::sqrt(height / getDimensions().y));
 }
 
 void Text::setScale(float scale)

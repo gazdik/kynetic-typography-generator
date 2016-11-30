@@ -40,13 +40,15 @@ float LetterAside::run(InputString &inputString, Node &inputNode, float startTim
     inputNode.addChild(sw);
     sw->runAction(startTime, new FadeIn(0.3f));
 
-    float owLineHeight = swD.y / owLines;
+    float owLineSpace = 10;
+    float owLineHeight = (swD.y + owLineSpace) / owLines;
     float fadeoutTime = 0.8f;
 
     for (int i = 0; i < owLines; ++i) {
         auto ow = new Text(inputString.read(1, SOT_WORD));
+        ow->setLineLength(10000);
         ow->setPosition(owLeft, bottom + (owLines - 1) * owLineHeight - i * owLineHeight);
-        ow->setScale(1.55f);
+        ow->setScaleForHeight(owLineHeight - owLineSpace);
 
         ow->setAlpha(0);
         inputNode.addChild(ow);

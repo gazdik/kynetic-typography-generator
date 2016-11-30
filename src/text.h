@@ -50,6 +50,21 @@ public:
 
     void setScale(float scale);
 
+    /**
+     * @brief Sets scale of text so that it has the specified width.
+     * @param width desired width of the text
+     */
+    void setScaleForWidth(float width);
+
+    /**
+     * @brief Sets scale of text so that it has the specified height.
+     * @param height desired height of the text
+     */
+    void setScaleForHeight(float height);
+
+    float getLineSpacing() const;
+    void setLineSpacing(float lineSpacing);
+
 protected:
 
     void initBuffers();
@@ -59,6 +74,7 @@ private:
 
     TextAlignment _alignment = ALIGN_LEFT;
     float _lineLength = 1920.0f;
+    float _lineSpacing = 1.0f;
 
     std::string _string;
 
