@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# Templates
+
+# .H
+
+hFile=$(cat << EOF
+#ifndef {{nameBig}}_H
+#define {{nameBig}}_H
+
+#include "../effect.h"
+
+class {{nameClass}} : public Effect
+{
+public:
+    {{nameClass}}();
+    virtual ~{{nameClass}}() {}
+    float run(InputString& inputString, Node& inputNode, float startTime) override;
+    bool acceptsString(InputString const &inputString) override;
+};
+
+#endif // {{nameBig}}_H
+EOF
+)
+
+# .CPP
+
+cppFile=$(cat << EOF
+#include "{{nameSmall}}.h"
+
+{{nameClass}}::{{nameClass}}()
+{
+}
+
+bool {{nameClass}}::acceptsString(const InputString &inputString)
+{
+    return inputString.startsWith(1, SOT_WORD);
+}
+
+float {{nameClass}}::run(InputString &inputString, Node &inputNode, float startTime)
+{
+    int owLines = 3;
+
+    inputNode.runAction(startTime,
+        new MoveTo(0, glm::vec3(0, 0, 0))
+    );
+
+    // Implementation
+
+    float dur = 1 + owLines * 0.1f;
+
+    inputNode.runAction(startTime + dur,
+        new MoveTo(0, glm::vec3(-1920, 0, 0))
+    );
+
+    return dur;
+}
+EOF
+)
+
+# Exit on any failure
+set -e
+
+# Check parameters
+if [ -z "$1" ]; then
+  >&2 echo -e "Call $0 ClassName"
+  exit 1
+fi
+
+# Save parameters
+
+nameClass="$1"
+nameSmall="${nameClass,,}"
+nameBig="${nameClass^^}"
+
+# Ensure directory
+cd "src/effects"
+
+# Prepare templates
+hFile=$(printf "$hFile" | sed "s/{{nameClass}}/$nameClass/g; s/{{nameBig}}/$nameBig/g")
+cppFile=$(printf "$cppFile" | sed -e "s/{{nameClass}}/$nameClass/g; s/{{nameSmall}}/$nameSmall/g")
+
+# Write them
+printf "$hFile" > "${nameSmall}.h"
+printf "$cppFile" > "${nameSmall}.cpp"
+
+# Go to src
+cd ..
+
+sed -i "s:// Effects:// Effects\n#include \"effects/${nameSmall}.h\":g" kinetypogen.h
+sed -i "s:// Normal effects:// Normal effects\n    effects.push_back(new ${nameClass}());:g" kinetypogen.cpp
+
+cd ..
+sed -i "s:HEADERS += :HEADERS += effects/${nameSmall}.h \\\\\n    :g; s:SOURCES += :SOURCES += effects/${nameSmall}.cpp \\\\\n    :g" pgr-projekt.pro
