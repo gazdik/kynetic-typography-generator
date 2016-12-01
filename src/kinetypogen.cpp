@@ -46,8 +46,14 @@ KineTypoGen::KineTypoGen(int& argc, char* argv[])
 int KineTypoGen::run()
 {
     std::vector<Effect*> effects;
+
+    // Debug effects
     //effects.push_back(new TestEffect());
 //    effects.push_back(new CalibrationEffect());
+//    effects.push_back(new SinkEffect());
+
+    // Normal effects
+    effects.push_back(new RotateFlyEffect());
     effects.push_back(new LetterAside());
     effects.push_back(new OneWord());
     // effects declarations go here
@@ -91,6 +97,7 @@ void KineTypoGen::renderScene()
     view = glm::lookAt(cameraPos, cameraTarget, cameraDirection); // !
 
     mainNode->render(projection * view);
+//    mainNode->render(projection);
 
     glView->swapBuffers();
 

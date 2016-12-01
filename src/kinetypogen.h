@@ -33,6 +33,8 @@
 #include "effects/letteraside.h"
 #include "effects/oneword.h"
 #include "effects/calibrationeffect.h"
+#include "effects/rotateflyeffect.h"
+#include "effects/sinkeffect.h"
 
 class KineTypoGen
 {

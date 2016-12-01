@@ -6,6 +6,7 @@
 #include "node.h"
 #include "action.h"
 #include "text.h"
+#include "group.h"
 
 class Effect
 {

@@ -19,10 +19,12 @@ SOURCES += kinetypogen.cpp \
     text.cpp \
     group.cpp \
     geometricshape.cpp \
+    fontcache.cpp \
     effects/letteraside.cpp \
     effects/testeffect.cpp \
     effects/oneword.cpp \
-    fontcache.cpp
+    effects/rotateflyeffect.cpp \
+    effects/sinkeffect.cpp
 
 HEADERS += kinetypogen.h \
     inputstring.h \
@@ -38,7 +40,9 @@ HEADERS += kinetypogen.h \
     group.h \
     geometricshape.h \
     constants.h \
+    fontcache.h \
     effects/letteraside.h \
     effects/testeffect.h \
     effects/oneword.h \
-    fontcache.h
+    effects/rotateflyeffect.h \
+    effects/sinkeffect.h
