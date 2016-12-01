@@ -29,6 +29,7 @@
 #include "effect.h"
 
 // Effects
+#include "effects/wordcloudeffect.h"
 #include "effects/testeffect.h"
 #include "effects/letteraside.h"
 #include "effects/oneword.h"

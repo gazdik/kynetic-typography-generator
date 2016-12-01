@@ -8,7 +8,8 @@ PKGCONFIG += freetype2 gl glu glew ftgl
 
 LIBS += -lglut -lGLEW -lglfw
 
-SOURCES += kinetypogen.cpp \
+SOURCES += effects/wordcloudeffect.cpp \
+    kinetypogen.cpp \
     action.cpp\
     actionmanager.cpp \
     inputstring.cpp \
@@ -26,7 +27,8 @@ SOURCES += kinetypogen.cpp \
     effects/rotateflyeffect.cpp \
     effects/sinkeffect.cpp
 
-HEADERS += kinetypogen.h \
+HEADERS += effects/wordcloudeffect.h \
+    kinetypogen.h \
     inputstring.h \
     action.h \
     actionmanager.h \
