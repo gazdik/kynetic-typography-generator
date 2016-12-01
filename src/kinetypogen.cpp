@@ -50,13 +50,13 @@ int KineTypoGen::run()
     // Debug effects
     //effects.push_back(new TestEffect());
 //    effects.push_back(new CalibrationEffect());
-//    effects.push_back(new SinkEffect());
+    effects.push_back(new SinkEffect());
 
     // Normal effects
     effects.push_back(new WordCloudEffect());
-    effects.push_back(new RotateFlyEffect());
-    effects.push_back(new LetterAside());
-    effects.push_back(new OneWord());
+//    effects.push_back(new RotateFlyEffect());
+//    effects.push_back(new LetterAside());
+//    effects.push_back(new OneWord());
     // effects declarations go here
 
     SequenceRunner sequenceRunner(effects);
@@ -88,17 +88,31 @@ void KineTypoGen::renderScene()
     // TODO Calculate the exact value of Z position
     glm::vec3 cameraPos {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 960.0f};
     glm::vec3 cameraTarget {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 0.0f};
-    glm::vec3 cameraDirection { 0.0f, 1.0f, 0.0f };
+    glm::vec3 cameraDirection { 0.0f, -1.0f, 0.0f };
 
     // For orthogonal projection comment marked lines
     glm::mat4 projection;
 //    projection = glm::ortho(0.0f, WINDOW_WIDTH, 0.0f, WINDOW_HEIGHT, -1000.0f, 1000.0f);
     projection = glm::perspectiveFov(45.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 10000.0f); // !
-    glm::mat4 view;
-    view = glm::lookAt(cameraPos, cameraTarget, cameraDirection); // !
 
-    mainNode->render(projection * view);
-//    mainNode->render(projection);
+    // DoF
+    int n = 10;
+    float aperture = 20;
+
+    glm::vec3 right = glm::normalize(glm::cross(cameraTarget - cameraPos, cameraDirection));
+    glm::vec3 p_up = glm::normalize(glm::cross(cameraTarget - cameraPos, right));
+
+    for(int i = 0; i < n; i++) {
+      glm::vec3 bokeh = right * cosf(i * 2 * M_PI / n) + p_up * sinf(i * 2 * M_PI / n);
+      glm::mat4 view = glm::lookAt(cameraPos + aperture * bokeh, cameraTarget, p_up);
+
+      mainNode->render(projection * view);
+      //mainNode->render(projection);
+
+      glAccum(i ? GL_ACCUM : GL_LOAD, 1.0 / n);
+    }
+
+    glAccum(GL_RETURN, 1);
 
     glView->swapBuffers();
 
