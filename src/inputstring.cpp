@@ -19,8 +19,12 @@ std::string InputString::trim(const std::string &s)
    return (wsback<=wsfront ? std::string() : std::string(wsfront,wsback));
 }
 
-bool InputString::startsWith(int count, StringObjectType type, StringObjectModifier modifiers) const
+bool InputString::startsWith(int count, StringObjectType type, int modifiers) const
 {
+    if (!(modifiers & (SOM_MEDIUM | SOM_LONG | SOM_SHORT))) {
+        modifiers = SOM_MEDIUM | SOM_LONG | SOM_SHORT;
+    }
+
     std::string remaining = str;
     std::smatch match;
 
@@ -44,9 +48,9 @@ bool InputString::startsWith(int count, StringObjectType type, StringObjectModif
 
             if (modifiers & (SOM_MEDIUM | SOM_LONG | SOM_SHORT)) {
                 std::string::size_type s = read(1, type, false, remaining).size();
-                if ((modifiers & SOM_SHORT && s > 2) ||
-                    (modifiers & SOM_LONG && s < 8) ||
-                    (modifiers & SOM_MEDIUM && (s <= 2 || s >= 8))
+                if ((!(modifiers & SOM_SHORT) && s <= 2) ||
+                    (!(modifiers & SOM_LONG) && s >= 8) ||
+                    (!(modifiers & SOM_MEDIUM) && (s > 2 && s <= 8))
                 ) {
                     return false;
                 }

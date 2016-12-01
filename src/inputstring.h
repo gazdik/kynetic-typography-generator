@@ -25,7 +25,7 @@ class InputString
 public:
     InputString(std::string str);
 
-    bool startsWith(int count, StringObjectType type, StringObjectModifier modifiers = (StringObjectModifier)0) const;
+    bool startsWith(int count, StringObjectType type, int modifiers = 0) const;
 
     std::string read(int count, StringObjectType type, bool pop = true);
     std::string readAll(bool pop = true);
