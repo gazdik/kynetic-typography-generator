@@ -43,19 +43,19 @@ void ActionManager::removeAction(Action* action)
 
 void ActionManager::update(float time)
 {
-    if (_firstUpdate) {
-        _firstUpdate = false;
-        _previousTime = time;
-        return;
-    }
-
-    float dt = time - _previousTime;
-    _previousTime = time;
+//    if (_firstUpdate) {
+//        _firstUpdate = false;
+//        _previousTime = time;
+//        return;
+//    }
+//
+//    float dt = time - _previousTime;
+//    _previousTime = time;
 
     for (auto it = _actions.begin(); it != _actions.end(); /* nothing */) {
         auto action = *it;
 
-        action->step(dt);
+        action->step(time);
 
         if (action->isRunning())
             it++;

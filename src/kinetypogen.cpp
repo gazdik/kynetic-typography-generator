@@ -38,7 +38,8 @@ KineTypoGen::KineTypoGen(int& argc, char* argv[])
     // Do the magic here
 
     glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -48,16 +49,16 @@ int KineTypoGen::run()
     std::vector<Effect*> effects;
 
     // Debug effects
-    //effects.push_back(new TestEffect());
+    effects.push_back(new TestEffect());
 //    effects.push_back(new CalibrationEffect());
-    effects.push_back(new SinkEffect());
+//    effects.push_back(new SinkEffect());
 
     // Normal effects
     effects.push_back(new WordCloudEffect());
 //    effects.push_back(new RotateFlyEffect());
 //    effects.push_back(new LetterAside());
 //    effects.push_back(new OneWord());
-    // effects declarations go here
+//     effects declarations go here
 
     SequenceRunner sequenceRunner(effects);
     std::cout << "Seed: " << seed << std::endl;
@@ -78,22 +79,21 @@ void KineTypoGen::renderScene()
 {
     glfwPollEvents();
     float now = glfwGetTime();
+    float step = now - previoutTime;
+    previoutTime = now;
 
     glClearColor(1,1,1,1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_ACCUM_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    ActionManager::getInstance()->update(now);
+    static glm::vec3 cameraPos {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 960.0f};
+    static glm::vec3 cameraTarget {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 0.0f};
+    static glm::vec3 cameraDirection { 0.0f, 1.0f, 0.0f };
 
-    // TODO Calculate the exact value of Z position
-    glm::vec3 cameraPos {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 960.0f};
-    glm::vec3 cameraTarget {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 0.0f};
-    glm::vec3 cameraDirection { 0.0f, -1.0f, 0.0f };
-
-    // For orthogonal projection comment marked lines
     glm::mat4 projection;
-//    projection = glm::ortho(0.0f, WINDOW_WIDTH, 0.0f, WINDOW_HEIGHT, -1000.0f, 1000.0f);
-    projection = glm::perspectiveFov(45.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 10000.0f); // !
+    projection = glm::perspectiveFov(45.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 10000.0f);
 
     // DoF
     int n = 10;
@@ -103,16 +103,17 @@ void KineTypoGen::renderScene()
     glm::vec3 p_up = glm::normalize(glm::cross(cameraTarget - cameraPos, right));
 
     for(int i = 0; i < n; i++) {
+      ActionManager::getInstance()->update(step / n);
+
       glm::vec3 bokeh = right * cosf(i * 2 * M_PI / n) + p_up * sinf(i * 2 * M_PI / n);
-      glm::mat4 view = glm::lookAt(cameraPos + aperture * bokeh, cameraTarget, p_up);
+      glm::mat4 view = glm::lookAt(cameraPos + aperture * bokeh, cameraTarget, cameraDirection);
 
       mainNode->render(projection * view);
-      //mainNode->render(projection);
 
-      glAccum(i ? GL_ACCUM : GL_LOAD, 1.0 / n);
+      glAccum(i ? GL_ACCUM : GL_LOAD, 1.0f / n);
     }
 
-    glAccum(GL_RETURN, 1);
+    glAccum(GL_RETURN, 1.0f);
 
     glView->swapBuffers();
 

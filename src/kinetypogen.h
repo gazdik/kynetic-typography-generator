@@ -61,6 +61,7 @@ private:
 
     int seed;
     std::string str;
+    float previoutTime;
 };
 
 #endif // KINETYPOGEN_H
