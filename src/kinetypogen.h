@@ -29,6 +29,8 @@
 #include "effect.h"
 
 // Effects
+#include "effects/pileupeffect.h"
+#include "effects/pileupeffect.h"
 #include "effects/wordcloudeffect.h"
 #include "effects/testeffect.h"
 #include "effects/letteraside.h"

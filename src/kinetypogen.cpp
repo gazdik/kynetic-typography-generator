@@ -53,6 +53,7 @@ int KineTypoGen::run()
 //    effects.push_back(new SinkEffect());
 
     // Normal effects
+    effects.push_back(new PileUpEffect());
     effects.push_back(new WordCloudEffect());
     effects.push_back(new RotateFlyEffect());
     effects.push_back(new LetterAside());
