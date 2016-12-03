@@ -5,7 +5,6 @@ WordCloudEffect::WordCloudEffect()
 }
 
 const int WORDS_COUNT = 20;
-const float PI = 3.141593f;
 
 bool WordCloudEffect::acceptsString(const InputString &inputString)
 {
@@ -45,9 +44,9 @@ float WordCloudEffect::run(InputString &inputString, Node &inputNode, float star
             auto tg = new Group();
             tg->addChild(t);
             tg->setPosition(
-                radius * glm::sin(angle * PI / 180),
+                radius * glm::sin(angle * M_PI / 180),
                 ySign * 300,
-                radius * glm::cos(angle * PI / 180.0f)
+                radius * glm::cos(angle * M_PI / 180.0f)
             );
             tg->setRotation(glm::vec3(0, -angle, 0));
 

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <ctype.h>
+#include <math.h>
 #include "inputstring.h"
 #include "node.h"
 #include "action.h"
