@@ -42,6 +42,8 @@ void SequenceRunner::planRandomEffect(float time, InputString &inputString, Node
     ]{
         // Create group for the effect
         Group *effectGroup = new Group();
+        effectGroup->setContentSize(1920, 1080);
+        effectGroup->setAnchorPoint(0, 0);
         effectGroup->setPosition(0, -1080);
 
         mainNode.addChild(effectGroup);
