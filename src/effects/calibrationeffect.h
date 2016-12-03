@@ -17,7 +17,7 @@ public:
     virtual ~CalibrationEffect();
 
     float run(InputString &str, Node &inputNode, float startTime) override;
-    bool acceptsString(InputString const &inputString) override;
+    int acceptsString(InputString const &inputString) override;
 };
 
 #endif /* SRC_EFFECTS_CALIBRATIONEFFECT_H_ */

@@ -12,7 +12,7 @@ class TestEffect : public Effect
 public:
     ~TestEffect() {}
     float run(InputString &str, Node &inputNode, float startTime) override;
-    bool acceptsString(InputString const &inputString) override;
+    int acceptsString(InputString const &inputString) override;
 
     void bar();
     void foobar(const char *msg);

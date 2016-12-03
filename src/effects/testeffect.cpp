@@ -174,10 +174,10 @@ float TestEffect::run(InputString &str, Node &inputNode, float startTime)
     return 4;
 }
 
-bool TestEffect::acceptsString(InputString const &inputString)
+int TestEffect::acceptsString(InputString const &inputString)
 {
     UNUSED(inputString);
-    return true;
+    return 80;
 }
 
 void TestEffect::bar()

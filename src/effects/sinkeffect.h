@@ -8,7 +8,7 @@ class SinkEffect : public Effect
 public:
     SinkEffect();
     float run(InputString& inputString, Node& inputNode, float startTime) override;
-    bool acceptsString(InputString const &inputString) override;
+    int acceptsString(InputString const &inputString) override;
 };
 
 #endif // SINKEFFECT_H

@@ -5,9 +5,9 @@ OneWord::OneWord()
 
 }
 
-bool OneWord::acceptsString(const InputString &inputString)
+int OneWord::acceptsString(const InputString &inputString)
 {
-    return inputString.startsWith(1, SOT_WORD);
+    return inputString.startsWith(1, SOT_WORD) ? 40 : 0;
 }
 
 float OneWord::run(InputString &inputString, Node &inputNode, float startTime)

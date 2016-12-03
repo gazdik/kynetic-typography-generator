@@ -6,9 +6,9 @@ PileUpEffect::PileUpEffect()
 
 const float SPEED = 1080 / 0.3f;
 
-bool PileUpEffect::acceptsString(const InputString &inputString)
+int PileUpEffect::acceptsString(const InputString &inputString)
 {
-    return inputString.startsWith(8, SOT_WORD);
+    return inputString.startsWith(8, SOT_WORD) ? 30 : 0;
 }
 
 void PileUpEffect::transform(Text &t, float &time, Node &inputNode,

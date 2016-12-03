@@ -9,7 +9,7 @@ public:
     PileUpEffect();
     virtual ~PileUpEffect() {}
     float run(InputString& inputString, Node& inputNode, float startTime) override;
-    bool acceptsString(InputString const &inputString) override;
+    int acceptsString(InputString const &inputString) override;
     Text* newText(InputString &inputString, Node &inputNode, float width, float maxHeight, Point &td);
     Text* newTextWithHeight(InputString &inputString, Node &inputNode, float height, Point &td);
     void transform(Text &t, float &time, Node &inputNode,

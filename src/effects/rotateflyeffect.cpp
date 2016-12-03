@@ -7,9 +7,9 @@ RotateFlyEffect::RotateFlyEffect()
 
 static const int LINES_COUNT = 4;
 
-bool RotateFlyEffect::acceptsString(const InputString &inputString)
+int RotateFlyEffect::acceptsString(const InputString &inputString)
 {
-    return inputString.startsWith(LINES_COUNT, SOT_WORD, SOM_MEDIUM | SOM_LONG);
+    return inputString.startsWith(LINES_COUNT, SOT_WORD, SOM_MEDIUM | SOM_LONG) ? 100 : 0;
 }
 
 float RotateFlyEffect::run(InputString &inputString, Node &inputNode, float startTime)

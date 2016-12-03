@@ -5,11 +5,11 @@ LetterAside::LetterAside()
 
 }
 
-bool LetterAside::acceptsString(const InputString &inputString)
+int LetterAside::acceptsString(const InputString &inputString)
 {
     return (
         inputString.startsWith(1, SOT_WORD, SOM_SHORT) &&
-        inputString.startsWith(3, SOT_WORD)
+        inputString.startsWith(3, SOT_WORD) ? 100 : 0
     );
 }
 

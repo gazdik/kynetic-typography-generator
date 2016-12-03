@@ -64,9 +64,9 @@ float CalibrationEffect::run(InputString& str, Node& inputNode, float startTime)
     return 4.0f;
 }
 
-bool CalibrationEffect::acceptsString(const InputString& inputString)
+int CalibrationEffect::acceptsString(const InputString& inputString)
 {
     UNUSED(inputString);
 
-    return true;
+    return 80;
 }

@@ -11,7 +11,7 @@ float SinkEffect::run(InputString &inputString, Node &inputNode, float startTime
     return 0;
 }
 
-bool SinkEffect::acceptsString(const InputString &inputString)
+int SinkEffect::acceptsString(const InputString &inputString)
 {
-    return true;
+    return 100;
 }
