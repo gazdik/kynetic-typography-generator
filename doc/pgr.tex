@@ -92,48 +92,77 @@ unicode=true,
 \newpage
 \chapter{Zadání}
 
-Zde napište informace k zadání (nejde jen o přepis toho, co je na webu;
-komentujte vaše vlastní zpřesnění zadání, zaměření, důrazy, pojetí atd.). Text
-strukturujte, použijte odrážky, číslování$\ldots$
-
-\paragraph{Rozsah:} cca 10 odrážek
-
 \begin{itemize}
-	\item Položka 1
-	\begin{itemize}
-		\item Podpoložka 1.1
-		\item Podpoložka 1.2
-		\item $\ldots$
-	\end{itemize}
-	\item Položka 2
-	\begin{itemize}
-		\item Podpoložka 2.1
-		\item Podpoložka 2.2
-		\item $\ldots$
-	\end{itemize}
-	\item $\ldots$
+\item Uživatel při spuštění aplikaci předá soubor s libovolným textem
+\item Aplikace postupně text zobrazí
+  \begin{itemize}
+  \item animovaně s nelineárními časovými křivkami (Beziérovy kubiky)
+  \item ve 3D
+  \item vhodně esteticky rozdělený a rozmístěný
+  \end{itemize}
+\item Aplikace náhodně vybírá z možných animačních efektů a uspořádání
+  \begin{itemize}
+  \item Každý efekt si může klást různé požadavky na čtený text, např. \uv{začíná čtyřmi slovy, z nichž první je krátké a druhé je středně dlouhé}
+  \item Podle vhodnosti efektu pro zbývající text je efektu přiřazena váha, která ovlivňuje pravděpodobnost vybrání.
+  \end{itemize}
 \end{itemize}
+
+%Zde napište informace k zadání (nejde jen o přepis toho, co je na webu;
+%komentujte vaše vlastní zpřesnění zadání, zaměření, důrazy, pojetí atd.). Text
+%strukturujte, použijte odrážky, číslování$\ldots$
+
+%\paragraph{Rozsah:} cca 10 odrážek
 
 %---------------------------------------------------------------------------
 \chapter{Použité technologie}
 
-Zde vypište, jaké technologie vaše řešení používá – co potřebuje k běhu, co jste použili při tvorbě, atd. Text strukturujte, použijte odrážky, číslování \dots
+\begin{itemize}
 
-\paragraph{Rozsah:} cca 7 odrážek
+\item GLEW
+\item GLFW
+\item FTGL - Knihovna pro vykreslování textu v OpenGL - neoficiální verze přidávající podporu OpenGL 3 dostupná na \url{https://github.com/lukexi/ftgl3}
+\end{itemize}
+
+%Zde vypište, jaké technologie vaše řešení používá – co potřebuje k běhu, co jste použili při tvorbě, atd. Text strukturujte, použijte odrážky, číslování \dots
+
+%\paragraph{Rozsah:} cca 7 odrážek
 
 
 %---------------------------------------------------------------------------
 \chapter{Použité zdroje}
 
-Zde vypište, které zdroje jste použili k tvorbě: hotový kód, hotová data (obrázky, modely, \dots), studijní materiály. Pokud vyplyne, že v projektu je použit kód nebo data, která nejsou uvedena tady, jedná se o závažný problém a projekt bude pravděpodobně hodnocen 0 body.
+Beziérovy kubiky
 
-\paragraph{Rozsah:} potřebný počet odrážek
+OpenGL tutorial
+
+Fonty + licence:
+  Roboto
+  Fira Mono
+  DejaVuSerif
+
+Texty:
+  dream
+  havel
+
+Videa s kinetickou typografií:
+  Medic
+  After Effects
+
+%Zde vypište, které zdroje jste použili k tvorbě: hotový kód, hotová data (obrázky, modely, \dots), studijní materiály. Pokud vyplyne, že v projektu je použit kód nebo data, která nejsou uvedena tady, jedná se o závažný problém a projekt bude pravděpodobně hodnocen 0 body.
+
+%\paragraph{Rozsah:} potřebný počet odrážek
 
 %---------------------------------------------------------------------------
 \chapter{Nejdůležitější dosažené výsledky}
 
 Popište 3 věci, které jsou na vašem projektu nejlepší. Nejlépe ukažte a
 komentujte obrázky, v nejhorším případě vypište textově.
+
+Podle H.:
+  1. estetika: nelineární animační křivky, kompozice, zarovnání, podpůrné prostředky
+  2. kompletní animační framework, vlastní graf scény, groups pro relativní
+     pozicování v rámci efektů, objekty, souřadný systém (obrázek)
+  3. snadné přidávání nových efektů
 
 \section{První věc}
 
