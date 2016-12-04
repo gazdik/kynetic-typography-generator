@@ -16,6 +16,7 @@ src \
 fonts/DejaVuSerif-Bold.ttf \
 fonts/Roboto-Bold.ttf \
 fonts/Roboto-Regular.ttf \
-fonts/Roboto-Thin.ttf
+fonts/Roboto-Thin.ttf \
+doc.pdf
 
 zip -r "$TARGET" "$TARGET"
