@@ -9,6 +9,8 @@
 \usepackage{color}
 \usepackage{url}
 \usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{xcolor}
 \singlespacing
 \usepackage[square, numbers]{natbib}
 \pagestyle{plain}
@@ -25,7 +27,7 @@
 
 % ----- dopiste titulky -----------------------------------------------------
 \newcommand\Course{Počítačová grafika}
-\newcommand\WorkTitle{Generátor kynetické typografie}
+\newcommand\WorkTitle{Generátor kinetické typografie}
 \newcommand\AuthorA{Jan Hrdina}
 \newcommand\AuthorAEmail{xhrdin10@stud.fit.vutbr.cz}
 \newcommand\AuthorB{Peter Gazdík}
@@ -52,7 +54,7 @@ unicode=true,
 \begin{document}
 	\begin{titlepage}
 	\begin{center}
-		\includegraphics[height=5cm]{images/logo.eps}
+		\includegraphics[width=14cm]{images/logo.eps}
 	\end{center}
 	\vfill
 	\begin{center}
@@ -131,22 +133,24 @@ unicode=true,
 %---------------------------------------------------------------------------
 \chapter{Použité zdroje}
 
-Beziérovy kubiky
-
-OpenGL tutorial
-
-Fonty + licence:
-  Roboto
-  Fira Mono
-  DejaVuSerif
-
-Texty:
-  dream
-  havel
-
-Videa s kinetickou typografií:
-  Medic
-  After Effects
+\begin{itemize}
+\item Beziérovy kubiky \cite{bezier}
+\item OpenGL tutorial \cite{learnopengl}
+\item Fonty + licence
+\begin{itemize}
+\item Roboto -- Apache License, Version 2.0
+\item Fira Mono -- Open Font License, Version 1.1
+\item DejaVuSerif -- licence viz \url{http://dejavu-fonts.org/wiki/License}
+\end{itemize}
+\item Texty
+\begin{itemize}
+\item demos/dream - Martin Luther King, Jr., I Have a Dream \cite{speech:dream}
+\item demos/havel - První novoroční projev Václava Havla \cite{speech:havel}
+\end{itemize}
+\item Videa s kinetickou typografií \cite{video:soe} \cite{video:kity}
+\item Open-source herný engine Cocos2d-x \cite{cocos}
+\item Kniha Game programming patterns \cite{patterns}
+\end{itemize}  
 
 %Zde vypište, které zdroje jste použili k tvorbě: hotový kód, hotová data (obrázky, modely, \dots), studijní materiály. Pokud vyplyne, že v projektu je použit kód nebo data, která nejsou uvedena tady, jedná se o závažný problém a projekt bude pravděpodobně hodnocen 0 body.
 
@@ -155,192 +159,245 @@ Videa s kinetickou typografií:
 %---------------------------------------------------------------------------
 \chapter{Nejdůležitější dosažené výsledky}
 
-Popište 3 věci, které jsou na vašem projektu nejlepší. Nejlépe ukažte a
-komentujte obrázky, v nejhorším případě vypište textově.
+\section{Estetika}
 
-Podle H.:
-  1. estetika: nelineární animační křivky, kompozice, zarovnání, podpůrné prostředky
-  2. kompletní animační framework, vlastní graf scény, groups pro relativní
-     pozicování v rámci efektů, objekty, souřadný systém (obrázek)
-  3. snadné přidávání nových efektů
-
-\section{První věc}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non condimentum augue, quis accumsan tellus. Sed sagittis mauris tortor, a varius ipsum feugiat sed. Morbi dapibus neque purus, id condimentum sem tincidunt quis. Sed lacinia a justo in rutrum. Nam a enim id urna cursus consectetur non a mi. Fusce vitae augue urna. Nunc nec malesuada enim, vitae blandit leo. Vestibulum et orci nibh. Phasellus in nisi rutrum, mattis metus vehicula, tempus neque.
+Při návrhu efektů a podpůrných tříd jsme si dali záležet na výsledných estetických kvalitách.
 
 \begin{itemize}
-	\item Položka 1
-	\begin{itemize}
-		\item Podpoložka 1.1
-		\item Podpoložka 1.2
-		\item $\ldots$
-	\end{itemize}
-	\item Položka 2
-	\item $\ldots$
+	\item Využíváme nelineárních animačních křivek
+    \item Snažili jsme se pečlivě volit kompozici textu, podpůrné metody kreslení textu umožňují neobvyklé požadavky jako \uv{Automaticky nastav velikost písma tak aby šířka textu byla pokud možno přesně 600px a zároveň jeho výška nepřesáhla 800px}
+    \item Volba vhodného efektu pro aktuální text - když například text začíná krátkým slovem, je větší pravděpodobnost, že se vybere efekt který toho dokáže využít a například zarovnat velké \uv{I} po straně řádků \uv{I have a dream}
 \end{itemize}
 
 \begin{center}
 	\captionsetup{type=figure}
-		\includegraphics[width=10cm]{images/sample.jpg}
-	\captionof{figure}{Popisek vzorového obrázek}
+		\includegraphics[width=10cm]{images/dream.png}
+	\captionof{figure}{Efekt \uv{LetterAside}}
 \end{center}
 
-\section{Druhá věc}
+\section{Kompletní animační framework}
 
-Etiam a laoreet dolor, vel blandit ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam aliquet ipsum eget semper pretium. Maecenas mauris tortor, pretium sit amet convallis et, iaculis vel tortor. Donec ultrices magna et commodo tempus. Etiam sagittis lectus vitae lectus ultricies tincidunt. Nam aliquam non magna eget pellentesque.
+Pro zajištění snadné manipulace s textovými objekty jsme vytvořili 3D animační framework. Při jeho implementování jsme se inspirovali 2D herním enginem cocos2d-x\cite{cocos} a návrhovými vzory publikovanými v knize Game Programming Patterns \cite{patterns}.
 
-\begin{table}[h!]
-	\begin{center}
-    \begin{tabular}{ | p{3.5cm} | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
-    \hline
-    Sloupec A & Sloupec B & Sloupec C & Sloupec D
-    \\ \hline
+\begin{itemize}
+	\item Animace v čase -- posuny, rotace, škálování, změna průhlednosti.
+    \item Seskupování animací do skupin a jejich paralelní / sekvenční vykonávání.
+    \item Invokace vlastních funkcí v průběhu vykonávání animací.
+    \item Úprava časového průběhu animací pomocí beziérových kubik\cite{bezier}.
+    \item Pozicování nezávislé na velikosti okna.
+    \item Pozicování objektů relativně k jejich rodičovskému objektu v grafu scény a seskupování objektů.
+\end{itemize}
 
-	A1 & B1 & C1 & D1
-	\\ \hline
 
-	A2 & B2 & C2 & D2
-	\\ \hline
+\section{Snadné přidávání nových efektů}
 
-    \end{tabular}
-	\end{center}
-	\caption{Vzorová tabulka}
-\end{table}
-
-\section{Třetí věc}
-
-Vestibulum ac tellus et massa facilisis tristique in in ante. In elementum luctus ante, id cursus nulla. Quisque sit amet dolor dui. Suspendisse bibendum auctor augue, a posuere enim dictum non. Nunc iaculis libero eget interdum egestas. Suspendisse pretium cursus massa vel fringilla.
-
+Vše je navrženo tak, aby bylo možné snadno přidávat nové efekty. Pro maximální usnadnění této činnosti jsme dokonce vytvořili skript genEffect, který vytvoří šablonu pro efekt se zadaným názvem a rovnou jej zaregistruje v aplikaci.
 
 
 %---------------------------------------------------------------------------
-\chapter{Zvláštní použité znalosti}
+\chapter{Zvláštní použité znalosti} \label{znalosti}
 
-Uveďte informace, které byly potřeba nad rámec výuky probírané na FIT.
-Vysvětlete je pomocí obrázků, schémat, vzorců apod.
+\section{Rotace kolem pivotu}
 
-\paragraph{Rozsah:} podle potřeby a vlastního uvážení
+Aby bylo možné rotovat objekty v jiném bodě, než je jejich počátek (v tzv. pivotu), je potřeba před vykonáním rotace upravit pozici počátku na základě pozice pivotu. Nejjednodušší způsob, jak tohoto docílit je před samotnou rotací posunout celý objekt do tohoto bodu, vykonat rotaci a následně celý objekt posunout zpět. Toto má však za následek narušení relativního pozicování ostatních objektů, které jsou potomky aktuálního objektu.
+
+Abychom se tomu vyhnuli, je potřeba upravit pozici počátku na základě hodnoty aktuální rotace a pozice pivotu a ne jen na základě pozice pivotu. K aktuální pozici tedy potřebujeme připočítat hodnotu danou následujícím výpočtem, kde matice odpovídá transformační matici rotace postupně v osách $x$, $y$ a $z$ a body $x$, $y$ a $z$ představují pozici pivotu.
+
+\begin{equation*}
+\begin{bmatrix} 
+{\cos \beta \cos \gamma} & {-\cos \beta \sin \gamma } & {\sin \beta} & 0 \\ 
+{\cos \alpha \sin \gamma + \sin \alpha \sin \beta \cos \gamma } & {\cos \alpha \cos \gamma - \sin \alpha \sin \beta \sin \gamma } & - {\sin \alpha \cos \beta} & 0 \\ 
+{\sin \alpha \sin \gamma - \cos \alpha \sin \beta \cos \gamma} & {\sin \alpha \cos \gamma + \cos \alpha \sin \beta \sin \gamma} & {\cos \alpha \cos \beta} & 0 \\ 
+0 & 0 & 0 & 1 \end{bmatrix} 
+\cdot ({-1}) 
+\cdot 
+\begin{pmatrix} 
+x \\ y \\ z \\ 1 
+\end{pmatrix}
+\end{equation*}
+
+\section{Úprava časového průběhu animací}
+
+Pro dosažení přirozeného vzhledu jednotlivých akcí animační framework umožňuje upravit jejich jinak lineární časový průběh. Nový časový průběh je parametrizovatelný pomocí Beziérovy křivky, která je definovaná čtveřicí bodů, viz obrázek \ref{fig:bezier}. Algoritmus výpočtu Beziérovy kubiky je převzat z článku Bezier Curve based easing functions\cite{bezier}.
+
+\begin{figure}
+\begin{center}
+		\includegraphics[width=7.5cm]{images/timing-function.png}
+	\caption{Časový průběh definovaný čtveřicí hodnot $P_0-P_3$\cite{bezier}}
+    \label{fig:bezier}
+\end{center}
+\end{figure}
+
+
+\section{DoF a motion blur v OpenGL 3}
+
+Původně jsme plánovali do projektu začlenit podporu depth-of-field a motion blur. Oba algoritmy se dají snadno realizovat s využitím Accumulator Bufferu, proto jsme si jejich implementaci nechali až nakonec. Bohužel se nicméně pár dní před odevzdáním ukázalo, že accumulator buffer je od OpenGL v3.2 odstraněn z Core Profile \cite{opengl} a je tedy nutné buďto využít Compatibility Profile, který nám nefungoval s FTGL, nebo využít jiných prostředků.
+
+Pro DoF je například možné využít vlastních FBO, kdy se obrazová a hloubková složka rasterizované scény vyrenderují do textury, která se následně zpracovává ve fragment shaderu. Dá se tak dosáhnout zajímavých výsledků (viz \cite{blog:dof}), nicméně z časových důvodů jsme tuto náročnější implementaci již nestihli. Podstatné je, že po tomto kurzu už to pro nás není španělská vesnice a kdybychom měli pár dní navíc, určitě bychom to zvládli.
+
+\section{Ladění OpenGL}
+
+Při ladění jsme si vyzkoušeli práci s nástrojem Intel Graphics Performance Analyzer, který umožňuje analyzovat stav pipeline OpenGL v čase, debugovat shadery a dokonce i rozebírat jednotlivé objekty ve scéně. Program je dostupný na \url{https://software.intel.com/en-us/gpa}
+
+\section{Náhodný výběr prvků z pole s vahami}
+
+Při náhodném výběru textového efektu využíváme algoritmus zohledňující váhy jednotlivých efektů. Algoritmus jsme převzali z \url{http://softwareengineering.stackexchange.com/a/150678}
+
+\section{Techniky vykreslování textu}
+
+Pro naši realizaci bylo přirozeně nutné nastudovat způsoby řešení vykreslování textů pomocí OpenGL.
+
+Metody pracují většinou na jednom ze dvou principů:
+
+\begin{itemize}
+\item \textbf{Text jako bitmapa} -- text se mimo OpenGL vykreslí do bitmapy a ta je následně v OpenGL použita jako textura. Přístupy se můžou lišit podle toho, jestli se vytvoří bitmapa se všemi glyphy a z nich se pak skládají řetězce nebo se renderuje každý řetězec zvlášť
+\item \textbf{Text jako vektor} -- text se pomocí tesselátoru převede z polygonálního popisu na trojúhelníky a ty se rasterizují již pomocí grafické karty. Tuto metodu využíváme my.
+\end{itemize}
+
+Pro načítání fontů a jejich polygonální reprezentace slouží knihovna FreeType. O podporu tesselace, pozicování a použití v OpenGL ji doplňuje knihovna FTGL, kterou využíváme. Původní knihovna FTGL s poslední aktualizací v roce 2011 bohužel nepodporuje OpenGL 3, proto jsme použili neoficiální fork.
+
+%Uveďte informace, které byly potřeba nad rámec výuky probírané na FIT.
+%Vysvětlete je pomocí obrázků, schémat, vzorců apod.
+
+%\paragraph{Rozsah:} podle potřeby a vlastního uvážení
 
 
 %---------------------------------------------------------------------------
 \chapter{Práce na projektu}
 
 \section{Rozdělení práce v týmu}
-Pokud to bude vhodné, použijte odrážky místo souvislých vět.
-
-\paragraph{Rozsah:} co nejstručnější tak, aby bylo zřejmé, jak byla dělena práce a za co v
-projektu je kdo zodpovědný.
 
 \begin{itemize}
-\item \textbf{\AuthorA}: Udělal todle, tamto, vlastně skoro všechno
-\item \textbf{\AuthorB}: Neudělal skoro nic, ale dělal zbytku týmu kafe
+\item \textbf{\AuthorA}: Implementace efektů, vykreslování/pozicování textů, celková vize
+\item \textbf{\AuthorB}: Animační engine (animace, akce, graf scény, vykreslování, \dots)
 \end{itemize}
 
 %---------------------------------------------------------------------------
 \section{Co bylo nejpracnější}
 
-Popište, co vám při řešení nejvíce komplikovalo život, s čím jste se museli
-potýkat, co zabralo čas.
-
-\paragraph{Rozsah:} 5-10 řádků
-
 \begin{itemize}
-\item \textbf{\AuthorA}: Prácné bylo todle a tamto.
-\item \textbf{\AuthorB}: Pracné bylo vyvážit poměr kafe, mléka a cukru.
+\item \textbf{\AuthorA}
+	\begin{itemize}
+    \item Pozicování a transformace textu v souřadném systému u efektů a vytvoření vhodných abstrakcí
+    \item Koordinace a návaznost animací
+    \end{itemize}
+\item \textbf{\AuthorB}:
+\begin{itemize}
+	\item Přechod na FTGL s podporou OpenGL 3.0
+	\item Pokročilejší transformace vyžadující znalosti lineární algebry.
+    \item Vytvoření souřadného systému simulujícího ortogonální projekci pro zabezpečení jednoduchého pozicování.
 \end{itemize}
-
+\end{itemize}
 
 %---------------------------------------------------------------------------
 \section{Zkušenosti získané řešením projektu}
 
-Popište, co jste se řešením projektu naučili. Zahrňte dovednosti obecně
-programátorské, věci z oblasti počítačové grafiky, ale i spolupráci v týmu,
-hospodaření s časem, atd.
+\begin{itemize}
+\item Trello a Scrum se opět osvědčily na organizaci a plánování vývoje
+\item Overleaf na online psaní dokumentace
+\item Osvojení nových technologií a dovedností, viz \nameref{znalosti}
+\end{itemize}
 
-\paragraph{Rozsah:} formulujte stručně, uchopte cca 3-5 věcí
-
-%---------------------------------------------------------------------------
+---------------------------------------------------------------------------
 \chapter{Autoevaluace}
 
-Ohodnoťte vaše řešení v jednotlivých kategoriích (0 – nic neuděláno,
-zoufalství, 100\% – dokonalost sama). Projekt, který ve finále obdrží plný
-počet bodů, může mít složky hodnocené i hodně nízko. Uvedení hodnot blízkých
-100\% ve všech nebo mnoha kategoriích může ukazovat na nepochopení problematiky nebo na snahu kamuflovat slabé stránky projektu. Bodově hodnocena bude i
-schopnost vnímat silné a slabé stránky svého řešení.
-
-\paragraph{Technický návrh (50\%):} (analýza, dekompozice problému, volba
+\paragraph{Technický návrh (80\%):} (analýza, dekompozice problému, volba
 vhodných prostředků, $\ldots$)
-Stručně (1-2 řádky) komentujte hodnocení.
 
-\paragraph{Programování (50\%):} (kvalita a čitelnost kódu, spolehlivost běhu,
+  \begin{itemize}
+  \item Návrh architektury pomocí UML diagramu tříd
+  \item oddělení OpenGL detailů od zbytku aplikace
+  \item odstínění kódu efektů od implementačních detailů
+  \end{itemize}
+
+\paragraph{Programování (70\%):} (kvalita a čitelnost kódu, spolehlivost běhu,
 obecnost řešení, znovupoužitelnost, $\ldots$)
-Stručně (1-2 řádky) komentujte hodnocení.
 
-\paragraph{Vzhled vytvořeného řešení (50\%):} (uvěřitelnost zobrazení,
+  \begin{itemize}
+  \item Snaha o intuitivní názvy identifikátorů
+  \item Využití C++11 a moderních konstrukcí
+  \end{itemize}
+
+\paragraph{Vzhled vytvořeného řešení (80\%):} (uvěřitelnost zobrazení,
 estetická kvalita, vhled GUI, $\ldots$)
-Stručně (1-2 řádky) komentujte hodnocení.
 
-\paragraph{Využití zdrojů (50\%):} (využití existujícího kódu a dat, využití
+  \begin{itemize}
+  \item Pravidlo třetin v kompozici
+  \item Pečlivá typografie
+  \item Easing
+  \end{itemize}
+
+\paragraph{Využití zdrojů (90\%):} (využití existujícího kódu a dat, využití
 literatury, $\ldots$)
-Stručně (1-2 řádky) komentujte hodnocení.
 
-\paragraph{Hospodaření s časem (50\%):} (rovnoměrné dotažení částí projektu,
+  \begin{itemize}
+  \item Architektura inspirovaná 2D herním enginem cocos2d-x
+  \item Návrhové vzory uvedené v elektronické verzi knihy Game Programming
+  \end{itemize}
+
+\paragraph{Hospodaření s časem (90\%):} (rovnoměrné dotažení částí projektu,
 míra spěchu, chybějící části řešení, $\ldots$)
-Stručně (1-2 řádky) komentujte hodnocení.
 
-\paragraph{Spolupráce v týmu (50\%):} (komunikace, dodržování dohod, vzájemné
+  \begin{itemize}
+  \item Práce na projektu v čase rozložena rovnoměrně
+  \item Absence pokročilejších post-processing efektů - nechali jsme je na poslední chvíli, protože jsme spoléhali na jednoduchou implementaci pomocí accumulator bufferu, který, jak se ukázalo, již není podporován. Prozkoumali jsme techniky implementace v současných API, ale z důvodu nečekané časové náročnosti jsme ji vynechali.
+  \end{itemize}
+
+\paragraph{Spolupráce v týmu (100\%):} (komunikace, dodržování dohod, vzájemné
 spolehnutí, rovnoměrnost, $\ldots$)
-Stručně (1-2 řádky) komentujte hodnocení.
 
-\paragraph{Celkový dojem (50\%):} (pracnost, získané dovednosti, užitečnost,
+  \begin{itemize}
+  \item Využití Gitu, Trella, Skype, chatu
+  \item Rychlá komunikace v obou směrech
+  \end{itemize}
+
+\paragraph{Celkový dojem (87\%):} (pracnost, získané dovednosti, užitečnost,
 volba zadání, cokoliv, $\ldots$)
-Stručně (5-10 řádků) komentujte hodnocení.
+
+Bavilo a motivovalo nás pracovat na vlastním zadání, bylo osvěžující pracovat na aplikaci čistě pro estetický požitek.
+Jsme rádi, že jsme si mohli osahat OpenGL, ke kterému by se člověk jinak nejspíš těžko nutil. Pracovali jsme tvrdě, ale výsledek (myslíme) stálo za to.
 
 %---------------------------------------------------------------------------
 \chapter{Ovládání vytvořeného programu}
 
 \section{Technologie potřebné pro spuštění programu}
-Zde vypište, jaké technologie vaše řešení používá – co potřebuje k běhu, co
-jste použili při tvorbě, atd. Text strukturujte, použijte odrážky,
-číslování$\ldots$
 
-\paragraph{Rozsah:} odrážky, dle potřeby
-
-\section{Programy a služby použité při tvorbě}
-Zde vypište, jaké technologie vaše řešení používá – co potřebuje k běhu, co
-jste použili při tvorbě, atd. Text strukturujte, použijte odrážky,
-číslování$\ldots$
-
-\paragraph{Rozsah:} odrážky, dle potřeby
+\begin{itemize}
+    \item cmake
+	\item GLEW
+    \item GLFW
+    \item FTGL
+    \item GLM
+\end{itemize}
 
 \section{Obsluha programu}
-Stručně popište, jak se program ovládá (nejlépe odrážky rozdělené do
-kategorií). Pokud se ovládání odchyluje od zkratek a způsobů obvykle
-používaných v okýnkových nadstavbách operačních systémů, zdůvodněte, proč se
-tak děje.
 
-\paragraph{Rozsah:} odrážky nebo jednoduchý popis a odrážky
+Aplikace se spouští v příkazovém řádku. Přijímá minimálně jeden parametr - cestu k souboru se vstupním textem. Volitelně je možné s parametrem \texttt{-s} předat číselný seed pro generátor pseudonáhodné posloupnosti efektů.
 
+Příklady spuštění aplikace:
+
+\begin{itemize}
+	\item ./pgr-project demos/dream
+  	\item ./pgr-project -s 42 demos/dream
+\end{itemize}
+
+Před začátkem animace jsme přidali 4sekundovou prodlevu pro možnost zvětšit okno na celou obrazovku apod.
 
 %---------------------------------------------------------------------------
 \chapter{Doporučení pro budoucí zadávání projektů}
 
-Co vám vyhovovalo a co nevyhovovalo na organizaci projektů? Které prvky by měly být zachovány, zesíleny, potlačeny, eliminovány?
-
-%---------------------------------------------------------------------------
-
-\chapter{Různé}
-
-Ještě něco by v dokumentaci mělo být? Napište to sem! Podle potřeby i založte
-novou kapitolu.
+Oceňujeme možnost realizace vlastního tématu. Na organizaci bychom nic neměnili.
 
 %---------------------------------------------------------------------------
 
 \bibliographystyle{plain}
 
-\nocite{cite1}
-\nocite{cite2}
-\nocite{cite3}
+\nocite{patterns}
+\nocite{cocos}
+\nocite{wiki:dof}
+\nocite{wiki:mb}
+\nocite{video:kity}
+\nocite{video:soe}
 
 \bibliography{reference}
 \addcontentsline{toc}{chapter}{Literatura}
